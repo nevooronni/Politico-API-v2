@@ -40,7 +40,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/nevooronni/Desktop/code/python/politico/Politico-API/lastchance"
+VIRTUAL_ENV="/home/nevooronni/Desktop/code/python/politico/Politico-API/anotherchance"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

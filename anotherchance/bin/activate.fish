@@ -36,7 +36,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/nevooronni/Desktop/code/python/politico/Politico-API/lastchance"
+set -gx VIRTUAL_ENV "/home/nevooronni/Desktop/code/python/politico/Politico-API/anotherchance"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
