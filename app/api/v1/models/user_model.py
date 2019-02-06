@@ -21,7 +21,7 @@ class User(object):
 
     users.append(data)
     return data
-
+    
   def user_exists(self, key, value):
     """
      method to check if a user exists
