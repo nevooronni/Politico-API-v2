@@ -11,5 +11,53 @@ db = User()
 def index():
     return jsonify({
       'status': 200, 
-      'message': 'Welcome to Questioner API web service!'
+      'message': 'Welcome to Politico API web service!'
+    }), 200
+
+@v1.route('/signup', methods=['POST'])
+def signup():
+    """ Endpoint functiom to register new user """
+    res_data = request.get_json()
+
+    if not res_data:
+        return jsonify({'status': 400, 'message': 'No data provided'}), 400
+
+    data, errors = UserSchema().load(res_data)
+    if errors:
+        return jsonify({'status': 400, 'message' : 'Invalid data, please fill all required fields', 'errors': errors}), 400
+
+    if db.user_exists('phoneNumber', data['phoneNumber']):
+        return jsonify({'status': 409, 'message' : 'Error phone number already exists'}), 409
+
+    if db.user_exists('email', data['email']):
+        return jsonify({'status': 409, 'message' : 'Error email already exists'}), 409
+
+    new_user = db.save(data)
+    result = UserSchema(exclude=['password']).dump(new_user).data
+
+    # Generate access 
+    access_token = create_access_token(identity=new_user['id'], fresh=True)
+    refresh_token = create_refresh_token(identity=new_user['id'])
+    return jsonify({
+        'status': 201, 
+        'data': [{
+          'user': result,
+          'message' : 'User created successfully', 
+          'access_token' : access_token, 
+          'refresh_token' : refresh_token 
+          }] 
+        }), 201
+
+@v1.route('/refresh-token', methods=['POST'])
+@jwt_refresh_token_required
+def refresh_token():
+  """
+    Endpoint function to refresh tokens
+  """
+  current_user = get_jwt_identity()
+  access_token = create_access_token(identity=current_user)
+  return jsonify({
+      'status': 200, 
+      'message': 'Token refreshed succesfully', 
+      'access_token': access_token
     }), 200

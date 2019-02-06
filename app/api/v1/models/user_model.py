@@ -30,11 +30,11 @@ class User(object):
     got_user = [user for user in users if value == user[key]]
     return len(got_user) > 0
 
-  def find_user_by_username(self, key, username):
+  def find_user_by_phonenumber(self, key, phoneNumber):
     """
       method to find a user by username
     """
-    got_user = [user for user in users if user['username'] == username]
+    got_user = [user for user in users if user['phoneNumber'] == phoneNumber]
     return got_user[0]
 
   def check_password(self, hash, password):

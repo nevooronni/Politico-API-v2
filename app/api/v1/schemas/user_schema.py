@@ -11,6 +11,7 @@ class UserSchema(Schema):
   firstname = fields.Str(required=True, validate=(required))
   lastname = fields.Str(required=True, validate=(required))
   othername = fields.Str(required=False)
+  password = fields.Str(required=True, validate=(password))
   phoneNumber = fields.Str(required=True, validate=(required))
   email = fields.Email(required=True, validate=(email))
   passportUrl = fields.Str(required=False)

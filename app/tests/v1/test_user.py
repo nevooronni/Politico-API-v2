@@ -13,6 +13,15 @@ class TestUser(BaseTest):
     """
     super().setUp()
 
+  def get_value(self, data, key):
+    new_value = data['data'][0]
+    return new_value[key]
+    
+  def get_value2(self, data, key):
+    new_value = data['data'][0]
+    user_value = new_value['user']
+    return user_value[key]
+
   def test_index(self):
     """
       Tesst index welcome route
@@ -79,7 +88,6 @@ class TestUser(BaseTest):
       'firstname': 'Neville',
       'lastname': 'Oronni',
       'othername': 'Gerald',
-      'username': 'nevooronni',
       'email': 'wrong_email',
       'password': 'flask_is_awesome',
       'phoneNumber': '0799244265'
@@ -101,7 +109,6 @@ class TestUser(BaseTest):
       "firstname": "Neville",
       "lastname": "Oronni",
       "othername": "Gerald",
-      "username": "nevooronni",
       "email": "nevooronni@gmail.com",
       "password": "afdafs",
       "phoneNumber": "0799244265"
@@ -122,10 +129,9 @@ class TestUser(BaseTest):
     user = {
       'firstname': 'Derrick',
       'lastname': 'Chisora',
-      'username': 'dero',
       'email': 'derrick@gmail.com',
       'password': 'abcD$234g',
-      'phoneNumber': '0799244265'  
+      'phoneNumber': '0725928106'  
     }
 
     res = self.client.post('/api/v1/signup', json=user, headers={'Content-Type': 'applicatioin/json'})
@@ -133,8 +139,8 @@ class TestUser(BaseTest):
 
     self.assertEqual(res.status_code, 201)
     self.assertEqual(data['status'], 201)
-    self.assertEqual(data['message'], 'User created successfully')
-    self.assertEqual(data['data']['username'], user['username'])
+    self.assertEqual( self.get_value(data, 'message'), 'User created successfully')
+    self.assertEqual( self.get_value2(data, 'phoneNumber'), user['phoneNumber'])
 
   def test_signup_with_existing_email(self):
     """
@@ -144,7 +150,6 @@ class TestUser(BaseTest):
     user_1 = {
       'firstname': 'Frank',
       'lastname': 'Ekirapa',
-      'username': 'ekiraps',
       'email': 'frankekirapa254@gmail.com',
       'password': 'abcD$234g',
       'phoneNumber': '0712345678'  
@@ -159,7 +164,6 @@ class TestUser(BaseTest):
     user_2 = {
       'firstname': 'Jane',
       'lastname': 'Onimbo',
-      'username': 'janey',
       'email': 'frankekirapa254@gmail.com',
       'password': 'rbcF$214c',
       'phoneNumber': '0712344444'  
@@ -172,17 +176,16 @@ class TestUser(BaseTest):
     self.assertEqual(data_2['status'], 409)
     self.assertEqual(data_2['message'], 'Error email already exists')
 
-  def test_signup_with_existing_username(self):
+  def test_signup_with_existing_phonenumber(self):
     """
-      Test sign up with an existing username
+      Test sign up with an existing phonenumber
     """
     user_1 = {
       'firstname': 'William',
       'lastname': 'Wamarite',
-      'username': 'willy',
       'email': 'William@gmail.com',
       'password': 'abcD$234g',
-      'phoneNumber': '0712345678'  
+      'phoneNumber': '0782444525'  
     }
 
     res_1 = self.client.post('/api/v1/signup', json=user_1, headers={'Content-Type': 'application/json'})
@@ -194,10 +197,9 @@ class TestUser(BaseTest):
     user_2 = {
       'firstname': 'Paul',
       'lastname': 'Davis',
-      'username': 'willy',
       'email': 'william@gmail.com',
       'password': 'rbcF$214c',
-      'phoneNumber': '0712344444'  
+      'phoneNumber': '0782444525'  
     }
 
     res_2 = self.client.post('/api/v1/signup', json=user_2, headers={'Content-Type': 'application/json'})
@@ -205,7 +207,7 @@ class TestUser(BaseTest):
 
     self.assertEqual(res_2.status_code, 409)
     self.assertEqual(data_2['status'], 409)
-    self.assertEqual(data_2['message'], 'Error username already exists')
+    self.assertEqual(data_2['message'], 'Error phone number already exists')
 
   
   def test_refresh_access_token_with_no_token(self):
@@ -227,7 +229,6 @@ class TestUser(BaseTest):
     user = {
       'firstname': 'Diana',
       'lastname': 'Mwiti',
-      'username': 'diana',
       'email': 'diana@gmail.com',
       'password': 'abcD$234g',
       'phoneNumber': '0799244265'  
@@ -238,8 +239,9 @@ class TestUser(BaseTest):
 
     self.assertEqual(res_1.status_code, 201)
     self.assertEqual(data_1['status'], 201)
+    data_1_token = self.get_value(data_1, 'access_token')
 
-    res = self.client.post('/api/v1/refresh-token', headers={'Authorization': 'Bearer {}'.format(data_1['access_token'])})
+    res = self.client.post('/api/v1/refresh-token', headers={'Authorization': 'Bearer {}'.format(data_1_token)})
     data = res.get_json()
 
     self.assertEqual(res.status_code, 422)
@@ -253,10 +255,9 @@ class TestUser(BaseTest):
     user = {
       'firstname': 'Micheal',
       'lastname': 'Omondi',
-      'username': 'omosh',
       'email': 'micheal@gmail.com',
       'password': 'abcD$234g',
-      'phoneNumber': '0799244265'  
+      'phoneNumber': '0745634231'  
     }
 
     res_1 = self.client.post('/api/v1/signup', json=user, headers={'Content-Type': 'application/json'})
@@ -264,8 +265,9 @@ class TestUser(BaseTest):
 
     self.assertEqual(res_1.status_code, 201)
     self.assertEqual(data_1['status'], 201)
+    data_1_refresh_token = self.get_value(data_1, 'refresh_token')
 
-    res = self.client.post('/api/v1/refresh-token', headers={'Authorization': 'Bearer {}'.format(data_1['refresh_token'])})
+    res = self.client.post('/api/v1/refresh-token', headers={'Authorization': 'Bearer {}'.format(data_1_refresh_token)})
     data = res.get_json()
 
     self.assertEqual(res.status_code, 200)
