@@ -6,6 +6,7 @@ from instance.config import app_config
 from flask_jwt_extended import (JWTManager)
 from app.api.v1.models.token_model import RevokedTokenModel
 from app.api.v1.views.user_view import v1 as users_blueprint
+from app.api.v1.views.party_view import v1 as parties_blueprint
 
 def create_app(config_name):
   """
@@ -27,5 +28,6 @@ def create_app(config_name):
 
   #register blueprint
   app.register_blueprint(users_blueprint)
+  app.register_blueprint(parties_blueprint)
 
   return app
