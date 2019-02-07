@@ -61,3 +61,44 @@ def refresh_token():
       'message': 'Token refreshed succesfully', 
       'access_token': access_token
     }), 200
+
+@v1.route('/signin', methods=['POST'])
+def signin():
+  """
+    Endpoint function to signin an existing user
+  """
+  signin_data = request.get_json()
+
+  if not signin_data:
+    abort(make_response(jsonify({
+      'status': 400, 'message': 
+      'No data provided', 
+      }), 400))
+
+  data, errors = UserSchema().load(signin_data, partial=True)
+  if errors:
+    abort(make_response(jsonify({'status': 400, 'message': 'Invalid data, please fill all required fields', 'errors': errors}), 400))
+
+  try:
+    username = data['phoneNumber']
+    password = data['password']
+  except:
+    abort(make_response(jsonify({'status': 400, 'message': 'Invalid credentials'}), 400))
+
+  if not db.user_exists('phoneNumber', data['phoneNumber']):
+    abort(make_response(jsonify({'status': 404, 'message': 'user not found'}), 404))
+
+  user = db.find_user_by_phonenumber('phoneNumber', data['phoneNumber'])
+  db.check_password(user['password'], password)
+
+  #generate access token
+  access_token = create_access_token(identity=user['id'], fresh=True)
+  refresh_token = create_refresh_token(identity=True)
+  return jsonify({
+    'status': 200,
+    'data': [{
+      'message': 'user logged in succesfully',
+      'access_token': access_token,
+      'refresh_token': refresh_token
+    }] 
+  }), 200
