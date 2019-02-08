@@ -35,3 +35,9 @@ class PoliticalParty(Model):
 
     parties_fetched = [party for party in political_parties if party['id'] == id]
     return parties_fetched[0]
+
+  def fetch_all_parties(self):
+    """
+      method for fetching all political parties
+    """
+    return political_parties
