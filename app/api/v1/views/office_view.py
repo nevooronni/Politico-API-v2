@@ -35,3 +35,29 @@ def create_office_party():
     }]
   }), 201
 
+@v1.route('/offices/<int:office_id>', methods=['GET'])
+@jwt_required
+def fetch_specific_office(office_id):
+  """ 
+    Endpoint for fetching a specific office
+  """
+
+  if not db.office_exists('id', office_id):
+    abort(make_response(jsonify({
+      'status': 404,
+      'data':[{
+      'message': 'office not found', 
+      }] 
+    }), 404))
+  
+  office = db.fetch_office_by_id(office_id)
+  data = []
+  data.append(OfficeSchema().dump(office).data)
+  return jsonify({
+    'status': 200, 
+    'data':[{
+      'office': data
+    }]
+  }), 200
+
+
