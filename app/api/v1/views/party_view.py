@@ -30,7 +30,29 @@ def create_political_party():
   return jsonify({
     'status': 201, 
     'data':[{
-      'message': 'meetup created succesfully', 
+      'message': 'party created succesfully', 
       'party': response
     }]
   }), 201
+
+@v1.route('/parties/<int:party_id>', methods=['GET'])
+@jwt_required
+def fetch_specific_party(party_id):
+  """ 
+    Endpoint for fetching a specific party
+  """
+
+  if not db.party_exists('id', party_id):
+    abort(make_response(jsonify({
+      'status': 404, 
+      'message': 
+      'party not found'
+    }), 404))
+  
+  party = db.fetch_party_by_id(party_id)
+  data = []
+  data.append(PoliticalPartySchema().dump(party).data)
+  return jsonify({
+    'status': 200, 
+    'data': data
+  }), 200

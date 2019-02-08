@@ -28,11 +28,10 @@ class PoliticalParty(Model):
     got_party = [party for party in political_parties if value == party[key]]
     return len(got_party) > 0
 
-  # def fetch_meetup_by_id(self, id):
-  #   """
-  #     method for fetching a meetup by id
-  #   """
+  def fetch_party_by_id(self, id):
+    """
+      method for fetching a party by id
+    """
 
-  #   meetups_fetched = [meetup for meetup in meetups if meetup['id'] == id]
-
-  #   return meetups_fetched[0]
+    parties_fetched = [party for party in political_parties if party['id'] == id]
+    return parties_fetched[0]
