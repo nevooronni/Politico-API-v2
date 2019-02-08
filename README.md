@@ -1,7 +1,5 @@
 # Politico-API
 
-# Questioner
-
 [![Build Status](https://travis-ci.com/nevooronni/Politico-API.svg?branch=develop)](https://travis-ci.com/nevooronni/Politico-API)
 [![Coverage Status](https://coveralls.io/repos/github/nevooronni/Politico-API/badge.svg?branch=develop)](https://coveralls.io/github/nevooronni/Politico-API?branch=develop)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  [![PEP8](https://img.shields.io/badge/code%20style-pep8A-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
