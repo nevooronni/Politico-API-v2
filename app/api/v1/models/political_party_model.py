@@ -6,7 +6,7 @@ political_parties = []
 
 class PoliticalParty(Model):
   """
-    Class for meetup object
+    Class for political party object
   """
 
   def __init__(self):
@@ -52,5 +52,7 @@ class PoliticalParty(Model):
         party['name'] = name
 
       return party
+
+  
 
   
