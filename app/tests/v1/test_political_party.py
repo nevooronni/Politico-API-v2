@@ -35,6 +35,12 @@ class TestPoliticalParty(BaseTest):
       'logoUrl': 'app/img/jubilee.jpg'
     }
 
+    self.political_party_3 = {
+      'name': 'Nasa Party',
+      'hqAddress': 'Karen, Nairobi',
+      'logoUrl': 'app/img/nasa.jpg'
+    }
+
     self.party_with_no_name = {
       'hqAddress': 'Kasarani, Nairobi',
       'logoUrl': 'app/img/party.jpg'
@@ -165,7 +171,33 @@ class TestPoliticalParty(BaseTest):
 
     self.assertEqual(res.status_code, 201)
     self.assertEqual(data['status'], 201)
-    self.assertEqual(self.get_value(data, 'message'), 'meetup created succesfully')
+    self.assertEqual(self.get_value(data, 'message'), 'party created succesfully')
+
+  def test_fetch_specific_party(self):
+    """
+      Test method for fetching a specific party
+    """
+
+    self.client.post('/api/v1/parties', json=self.political_party, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    self.client.post('/api/v1/parties', json=self.political_party_3, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+
+    res = self.client.get('/api/v1/parties/2', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    data = res.get_json()
+
+    self.assertEqual(res.status_code, 200)
+    self.assertEqual(data['status'], 200)
+    self.assertEqual(data['data'][0]['id'], 2)
+
+  def test_fetch_non_existent_party(self):
+      """
+        Test method for fetching a party that doesn't exist
+      """
+      res = self.client.get('/api/v1/parties/14', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+      data = res.get_json()
+
+      self.assertEqual(res.status_code, 404)
+      self.assertEqual(data['status'], 404)
+      self.assertEqual(data['message'], 'party not found')
 
 
   
