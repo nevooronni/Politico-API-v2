@@ -63,8 +63,9 @@ class TestPoliticalParty(BaseTest):
     
   def get_value2(self, data, key):
     new_value = data['data'][0]
-    user_value = new_value['user']
-    return user_value[key]
+    party_value = new_value['party'][0]
+    party_field = party_value['id']
+    return party_value[key]
 
   def signup(self):
     """ 
@@ -186,7 +187,7 @@ class TestPoliticalParty(BaseTest):
 
     self.assertEqual(res.status_code, 200)
     self.assertEqual(data['status'], 200)
-    self.assertEqual(data['data'][0]['id'], 2)
+    self.assertEqual(self.get_value2(data, 'id'), 2)
 
   def test_fetch_non_existent_party(self):
       """
@@ -197,7 +198,24 @@ class TestPoliticalParty(BaseTest):
 
       self.assertEqual(res.status_code, 404)
       self.assertEqual(data['status'], 404)
-      self.assertEqual(data['message'], 'party not found')
+      self.assertEqual(self.get_value(data, 'message'), 'party not found')
+
+  
+  def test_fetch_all_parties(self):
+    """ 
+      Test method for fetching all parties
+    """
+    self.client.post('/api/v1/parties', json=self.political_party, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    self.client.post('/api/v1/parties', json=self.political_party_3, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+
+    res = self.client.get('/api/v1/parties', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    data = res.get_json()
+
+    party_dict = data['data'][0]
+    party = party_dict['party']
+    self.assertEqual(res.status_code, 200)
+    self.assertEqual(data['status'], 200)
+    self.assertEqual(len(party), 2)
 
 
   

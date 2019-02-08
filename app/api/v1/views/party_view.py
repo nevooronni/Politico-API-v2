@@ -44,9 +44,10 @@ def fetch_specific_party(party_id):
 
   if not db.party_exists('id', party_id):
     abort(make_response(jsonify({
-      'status': 404, 
-      'message': 
-      'party not found'
+      'status': 404,
+      'data':[{
+      'message': 'party not found', 
+      }] 
     }), 404))
   
   party = db.fetch_party_by_id(party_id)
@@ -54,5 +55,23 @@ def fetch_specific_party(party_id):
   data.append(PoliticalPartySchema().dump(party).data)
   return jsonify({
     'status': 200, 
-    'data': data
+    'data':[{
+      'party': data
+    }]
   }), 200
+
+@v1.route('/parties', methods=['GET'])
+@jwt_required
+def fetch_all_parties():
+  """
+    Endpoint for fetching all political parties
+  """
+
+  parties = db.fetch_all_parties()
+  response = PoliticalPartySchema(many=True).dump(parties).data
+  return jsonify({
+    'status': 200, 
+    'data':[{
+      'party': response
+    }]
+    }), 200
