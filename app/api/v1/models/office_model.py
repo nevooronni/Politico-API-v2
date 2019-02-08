@@ -36,11 +36,11 @@ class Office(Model):
     offices_fetched = [office for office in offices if office['id'] == id]
     return offices_fetched[0]
 
-  # def fetch_all_parties(self):
-  #   """
-  #     method for fetching all political parties
-  #   """
-  #   return political_parties
+  def fetch_all_offices(self):
+    """
+      method for fetching all political offices
+    """
+    return offices
 
   # def update_party(self, party_id, name):
   #   """ 
