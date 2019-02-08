@@ -58,7 +58,7 @@ class TestPoliticalParty(BaseTest):
     
   def get_value2(self, data, key):
     new_value = data['data'][0]
-    party_value = new_value['party'][0]
+    party_value = new_value['office'][0]
     party_field = party_value['id']
     return party_value[key]
 
@@ -168,4 +168,30 @@ class TestPoliticalParty(BaseTest):
     self.assertEqual(res.status_code, 201)
     self.assertEqual(data['status'], 201)
     self.assertEqual(self.get_value(data, 'message'), 'office created succesfully')
+
+  def test_fetch_specific_office(self):
+    """
+      Test method for fetching a specific office
+    """
+
+    self.client.post('/api/v1/offices', json=self.office, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    self.client.post('/api/v1/offices', json=self.office_3, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+
+    res = self.client.get('/api/v1/offices/2', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    data = res.get_json()
+
+    self.assertEqual(res.status_code, 200)
+    self.assertEqual(data['status'], 200)
+    self.assertEqual(self.get_value2(data, 'id'), 2)
+
+  def test_fetch_non_existent_office(self):
+    """
+      Test method for fetching an office that doesn't exist
+    """
+    res = self.client.get('/api/v1/offices/14', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    data = res.get_json()
+
+    self.assertEqual(res.status_code, 404)
+    self.assertEqual(data['status'], 404)
+    self.assertEqual(self.get_value(data, 'message'), 'office not found')
 

@@ -28,13 +28,13 @@ class Office(Model):
     got_office = [office for office in offices if value == office[key]]
     return len(got_office) > 0
 
-  # def fetch_office_by_id(self, id):
-  #   """
-  #     method for fetching a party by id
-  #   """
+  def fetch_office_by_id(self, id):
+    """
+      method for fetching an office by id
+    """
 
-  #   parties_fetched = [party for party in political_parties if party['id'] == id]
-  #   return parties_fetched[0]
+    offices_fetched = [office for office in offices if office['id'] == id]
+    return offices_fetched[0]
 
   # def fetch_all_parties(self):
   #   """
