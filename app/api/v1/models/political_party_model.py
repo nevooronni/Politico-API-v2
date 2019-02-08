@@ -52,3 +52,5 @@ class PoliticalParty(Model):
         party['name'] = name
 
       return party
+
+  

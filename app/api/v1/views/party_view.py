@@ -81,7 +81,7 @@ def fetch_all_parties():
 @jwt_required
 def update_party_name(party_id):
   """
-    method to upvote a question
+    method to upvote a party
   """
   req_data = request.get_json()
 
@@ -104,5 +104,24 @@ def update_party_name(party_id):
       'id': party_id,
       'name': data['name'],
       'message': 'party updated successfully', 
+    }]
+  }), 200
+
+@v1.route('/parties/<int:party_id>', methods=['DELETE'])
+@jwt_required
+def delete_party_name(party_id):
+  """
+    method to delete a party
+  """
+
+  if not db.party_exists('id', party_id):
+    return jsonify({'status': 404, 'message': 'Error party not found'}), 404
+  else: 
+    db.delete(party_id)
+  
+  return jsonify({
+    'status': 200, 
+    'data': [{
+      'message': 'party deleted successfully', 
     }]
   }), 200

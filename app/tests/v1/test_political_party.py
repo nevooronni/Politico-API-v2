@@ -247,5 +247,32 @@ class TestPoliticalParty(BaseTest):
     self.assertEqual(data['status'], 200)
     self.assertEqual(self.get_value(data, 'message'), 'party updated successfully')
 
+  def test_delete_party_not_created(self):
+    """ 
+      Test method for deleting a party that hasn't been created 
+    """
+
+    res = self.client.delete('/api/v1/parties/4', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    data = res.get_json()
+
+    self.assertEqual(res.status_code, 404)
+    self.assertEqual(data['status'], 404)
+    self.assertEqual(data['message'], 'Error party not found')
+
+  def test_delete_meetup(self):
+    """
+      Test method for deleting a party successfully
+     """
+
+    self.client.post('/api/v1/parties', json=self.political_party, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    self.client.post('/api/v1/parties', json=self.political_party_3, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+
+    res = self.client.delete('/api/v1/parties/2', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    data = res.get_json()
+
+    self.assertEqual(res.status_code, 200)
+    self.assertEqual(data['status'], 200)
+    self.assertEqual(self.get_value(data, 'message'), 'party deleted successfully')
+
 
   
