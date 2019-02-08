@@ -259,7 +259,7 @@ class TestPoliticalParty(BaseTest):
     self.assertEqual(data['status'], 404)
     self.assertEqual(data['message'], 'Error party not found')
 
-  def test_delete_meetup(self):
+  def test_delete_party(self):
     """
       Test method for deleting a party successfully
      """

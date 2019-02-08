@@ -60,4 +60,20 @@ def fetch_specific_office(office_id):
     }]
   }), 200
 
+@v1.route('/offices', methods=['GET'])
+@jwt_required
+def fetch_all_offices():
+  """
+    Endpoint for fetching all political offices
+  """
+
+  offices = db.fetch_all_offices()
+  response = OfficeSchema(many=True).dump(offices).data
+  return jsonify({
+    'status': 200, 
+    'data':[{
+      'offices': response
+    }]
+    }), 200
+
 

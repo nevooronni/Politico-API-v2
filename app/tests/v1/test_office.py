@@ -195,3 +195,20 @@ class TestPoliticalParty(BaseTest):
     self.assertEqual(data['status'], 404)
     self.assertEqual(self.get_value(data, 'message'), 'office not found')
 
+  
+  def test_fetch_all_offices(self):
+    """ 
+      Test method for fetching all offices
+    """
+    self.client.post('/api/v1/offices', json=self.office, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    self.client.post('/api/v1/offices', json=self.office_3, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+
+    res = self.client.get('/api/v1/offices', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    data = res.get_json()
+
+    office_dict = data['data'][0]
+    office = office_dict['offices']
+    self.assertEqual(res.status_code, 200)
+    self.assertEqual(data['status'], 200)
+    self.assertEqual(len(office), 2)
+
