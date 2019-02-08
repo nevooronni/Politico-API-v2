@@ -75,3 +75,34 @@ def fetch_all_parties():
       'party': response
     }]
     }), 200
+
+
+@v1.route('/parties/<int:party_id>/name', methods=['PATCH'])
+@jwt_required
+def update_party_name(party_id):
+  """
+    method to upvote a question
+  """
+  req_data = request.get_json()
+
+  if not req_data:
+    abort(make_response(jsonify({'status': 404, 'message': 'Error party not found'}), 404))
+
+  data, errors = PoliticalPartySchema().load(req_data)
+  if errors:
+    abort(make_response(jsonify({'status': 400, 'message': 'Invalid data, please fill all required fields', 'errors': errors}), 400))
+
+  if not db.party_exists('id', party_id):
+    return jsonify({'status': 404, 'message': 'Error party not found!'}), 404
+
+  party = db.update_party(party_id, data['name'])
+  response = []
+  response.append(PoliticalPartySchema().dump(party).data)
+  return jsonify({
+    'status': 200, 
+    'data': [{
+      'id': party_id,
+      'name': data['name'],
+      'message': 'party updated successfully', 
+    }]
+  }), 200

@@ -217,5 +217,35 @@ class TestPoliticalParty(BaseTest):
     self.assertEqual(data['status'], 200)
     self.assertEqual(len(party), 2)
 
+  def test_update_party_not_posted(self):
+    """ 
+      Test update for party's name that hasn't been posted 
+    """
+
+    res = self.client.patch('/api/v1/parties/2/name', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    data = res.get_json()
+
+    self.assertEqual(res.status_code, 404)
+    self.assertEqual(data['status'], 404)
+    self.assertEqual(data['message'], 'Error party not found')
+
+  def test_update_party(self):
+    """ 
+      Test to update a party's name
+    """
+
+    res_1 = self.client.post('/api/v1/parties', json=self.political_party, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    data_1 = res_1.get_json()
+
+    self.assertEqual(res_1.status_code, 201)
+    self.assertEqual(data_1['status'], 201)
+
+    res = self.client.patch('/api/v1/parties/1/name', json={'name': 'Ford Kenya'}, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    data = res.get_json()
+
+    self.assertEqual(res.status_code, 200)
+    self.assertEqual(data['status'], 200)
+    self.assertEqual(self.get_value(data, 'message'), 'party updated successfully')
+
 
   

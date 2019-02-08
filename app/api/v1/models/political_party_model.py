@@ -41,3 +41,14 @@ class PoliticalParty(Model):
       method for fetching all political parties
     """
     return political_parties
+
+  def update_party(self, party_id, name):
+    """ 
+      method to update a party's name
+    """
+
+    for party in political_parties:
+      if party['id'] == party_id:
+        party['name'] = name
+
+      return party
