@@ -109,7 +109,7 @@ def update_party_name(party_id):
 
 @v1.route('/parties/<int:party_id>', methods=['DELETE'])
 @jwt_required
-def delete_party_name(party_id):
+def delete_party(party_id):
   """
     method to delete a party
   """

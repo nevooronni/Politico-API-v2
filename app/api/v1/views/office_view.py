@@ -76,4 +76,21 @@ def fetch_all_offices():
     }]
     }), 200
 
+@v1.route('/offices/<int:office_id>', methods=['DELETE'])
+@jwt_required
+def delete_office(office_id):
+  """
+    method to delete an office
+  """
 
+  if not db.office_exists('id', office_id):
+    return jsonify({'status': 404, 'message': 'Error office not found'}), 404
+  else: 
+    db.delete(office_id)
+  
+  return jsonify({
+    'status': 200, 
+    'data': [{
+      'message': 'office deleted successfully', 
+    }]
+  }), 200
