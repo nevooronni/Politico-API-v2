@@ -212,3 +212,18 @@ class TestPoliticalParty(BaseTest):
     self.assertEqual(data['status'], 200)
     self.assertEqual(len(office), 2)
 
+  def test_delete_office(self):
+    """
+      Test method for deleting an office successfully
+     """
+
+    self.client.post('/api/v1/offices', json=self.office, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    self.client.post('/api/v1/offices', json=self.office_3, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+
+    res = self.client.delete('/api/v1/offices/2', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    data = res.get_json()
+
+    self.assertEqual(res.status_code, 200)
+    self.assertEqual(data['status'], 200)
+    self.assertEqual(self.get_value(data, 'message'), 'office deleted successfully')
+
