@@ -9,9 +9,7 @@
 -------------------------
 Politico is a politics voting app, it allows the admin to create political parties and office for candidate to run for, the candidates can run for a particular office allowing users to vote for them.
 
-This project is managed by pivotal tracker board. [view the board here](https://www.pivotaltracker.com/n/projects/2244344)
-
-The site is hosted [here]()
+This project is managed by pivotal tracker board. [https://politco-api.herokuapp.com/api/v1/index)
 
 The following are API endpoints enabling one to:
 -------------------------
