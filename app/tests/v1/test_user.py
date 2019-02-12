@@ -29,7 +29,6 @@ class TestUser(BaseTest):
         
     res = self.client.post('/api/v1/signup', json=self.super_user)
     data = res.get_json()
-
     data_token = self.get_value(data, 'access_token')
 
     self.access_token = data_token
