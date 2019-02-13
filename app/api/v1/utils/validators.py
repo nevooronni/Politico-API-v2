@@ -53,3 +53,5 @@ def password(password):
 
   if error == True:
     raise ValidationError('Weak password provided')
+
+
