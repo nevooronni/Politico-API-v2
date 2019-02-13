@@ -8,6 +8,9 @@ from flask_jwt_extended import (jwt_required, get_jwt_identity)
 db = PoliticalParty()
 
 class PoliticalPartyAPI(MethodView):
+  """
+    class for political party method views
+  """
 
   @jwt_required
   def post(self):
