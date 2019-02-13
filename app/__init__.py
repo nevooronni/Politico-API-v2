@@ -10,6 +10,8 @@ from app.api.v1.models.token_model import RevokedTokenModel
 # from app.api.v1.views.office_view import v1 as offices_blueprint
 from app.api.v1.views.user_view import index_view, signup_auth_view, signin_auth_view, token_view
 
+from app.api.v1.views.party_view import create_party_view, fetch_party_view, fetch_all_parties_view, update_party_view,delete_party_view
+
 def create_app(config_name):
   """
     Create app using specified environment configurations
@@ -36,5 +38,10 @@ def create_app(config_name):
   app.add_url_rule('/api/v1/signup', view_func=signup_auth_view, methods=['POST'])
   app.add_url_rule('/api/v1/refresh-token', view_func=token_view, methods=['POST'])
   app.add_url_rule('/api/v1/signin', view_func=signin_auth_view, methods=['POST'])
+  app.add_url_rule('/api/v1/parties', view_func=create_party_view, methods=['POST'])
+  app.add_url_rule('/api/v1/parties/<int:party_id>', view_func=fetch_party_view, methods=['GET'])
+  app.add_url_rule('/api/v1/parties', view_func=fetch_all_parties_view, methods=['GET'])
+  app.add_url_rule('/api/v1/parties/<int:party_id>/name', view_func=update_party_view, methods=['PATCH'])
+  app.add_url_rule('/api/v1/parties/<int:party_id>', view_func=delete_party_view, methods=['DELETE'])
 
   return app

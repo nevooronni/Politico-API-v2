@@ -43,7 +43,7 @@ class TestUser(BaseTest):
 
     self.assertEqual(res.status_code, 200)
     self.assertEqual(data['status'], 200)
-    self.assertEqual(data['message'], 'Welcome to Politico API web service!')
+    self.assertEqual(data['message'], 'welcome to Politico API Web service, use the base url: https://politco-api.herokuapp.com/api/v1 for posting your requests')
 
   def test_signup_with_no_data(self):
     """
