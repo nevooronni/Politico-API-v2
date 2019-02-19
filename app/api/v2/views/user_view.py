@@ -56,50 +56,50 @@ class UserSignupAPI(MethodView):
             }] 
           }), 201
 
-# class UserSigninAPI(MethodView):
-#   """
-#     class for user signin endpoints
-#   """
+class UserSigninAPI(MethodView):
+  """
+    class for user signin endpoints
+  """
 
-#   def post(self):
-#     """
-#       Endpoint function to signin an existing user
-#     """
-#     signin_data = request.get_json()
+  def post(self):
+    """
+      Endpoint function to signin an existing user
+    """
+    signin_data = request.get_json()
 
-#     if not signin_data:
-#       abort(make_response(jsonify({
-#         'status': 400, 'message': 
-#         'No data provided', 
-#       }), 400))
+    if not signin_data:
+      abort(make_response(jsonify({
+        'status': 400, 'message': 
+        'No data provided', 
+      }), 400))
 
-#     data, errors = UserSchema().load(signin_data, partial=True)
-#     if errors:
-#       abort(make_response(jsonify({'status': 400, 'message': 'Invalid data, please fill all required fields', 'errors': errors}), 400))
+    data, errors = UserSchema().load(signin_data, partial=True)
+    if errors:
+      abort(make_response(jsonify({'status': 400, 'message': 'Invalid data, please fill all required fields', 'errors': errors}), 400))
 
-#     try:
-#       username = data['phoneNumber']
-#       password = data['password']
-#     except:
-#       abort(make_response(jsonify({'status': 400, 'message': 'Invalid credentials'}), 400))
+    try:
+      username = data['phoneNumber']
+      password = data['password']
+    except:
+      abort(make_response(jsonify({'status': 400, 'message': 'Invalid credentials'}), 400))
 
-#     if not db.user_exists('phoneNumber', data['phoneNumber']):
-#       abort(make_response(jsonify({'status': 404, 'message': 'user not found'}), 404))
+    if not db.user_exists('phoneNumber', data['phoneNumber']):
+      abort(make_response(jsonify({'status': 404, 'message': 'user not found'}), 404))
 
-#     user = db.find_user_by_phonenumber('phoneNumber', data['phoneNumber'])
-#     db.check_password(user['password'], password)
+    user = db.find_user_by_phonenumber('phoneNumber', data['phoneNumber'])
+    db.check_password(user['password'], password)
 
-#     #generate access token
-#     access_token = create_access_token(identity=user['id'], fresh=True)
-#     refresh_token = create_refresh_token(identity=True)
-#     return jsonify({
-#       'status': 200,
-#         'data': [{
-#           'message': 'user logged in succesfully',
-#           'access_token': access_token,
-#           'refresh_token': refresh_token
-#         }] 
-#       }), 200
+    #generate access token
+    access_token = create_access_token(identity=user['id'], fresh=True)
+    refresh_token = create_refresh_token(identity=True)
+    return jsonify({
+      'status': 200,
+        'data': [{
+          'message': 'user logged in succesfully',
+          'access_token': access_token,
+          'refresh_token': refresh_token
+        }] 
+      }), 200
 
 class TokenAPI(MethodView):
   """
@@ -121,6 +121,6 @@ class TokenAPI(MethodView):
 
 index_view = IndexAPI.as_view('index_api') 
 signup_auth_view = UserSignupAPI.as_view('signup_auth_api')
-# signin_auth_view = UserSigninAPI.as_view('signin_auth_api')
+signin_auth_view = UserSigninAPI.as_view('signin_auth_api')
 token_view = TokenAPI.as_view('token_api')
 
