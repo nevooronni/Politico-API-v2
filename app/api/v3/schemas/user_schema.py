@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields, post_dump
-from ..utils.validators import email, password, required
-from ..models.user_model import User
+from ...v1.utils.validators import email, password, required
+# from ..models.user_model import User
 
 class UserSchema(Schema):
   """
