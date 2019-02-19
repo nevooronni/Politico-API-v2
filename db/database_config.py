@@ -26,6 +26,8 @@ class DatabaseConnection:
         database, user, password, host, port
     )
 
+    print(DSN)
+
     try:
       global conn, cur
 
@@ -39,6 +41,43 @@ class DatabaseConnection:
       logger.error(str(error))
 
       sys.exit(1)
+
+
+  def drop_tables(self):
+    """ 
+      method to drop tables 
+    """
+
+    for table in tables:
+      cur.execute('DROP TABLE IF EXISTS {} CASCADE'.format(table))
+
+      conn.commit()
+
+  def create_tables(self):
+    """ 
+      method to create tables 
+    """
+
+    for query in create_table_queries:
+      cur.execute(query)
+
+    conn.commit()
+
+  def create_admin(self):
+    """ 
+      method to insert an admin user into the db 
+    """
+
+    user_query = "SELECT * FROM users WHERE firstname = 'Neville'"
+    cur.execute(user_query)
+    result = cur.fetchone()
+
+    if not result:
+      cur.execute("INSERT INTO users (firstname, lastname, othername, phoneNumber, email,\
+      password, isAdmin, isPolitician) VALUES ('Neville', 'Oronni', 'Gerald', '0712345678',\
+      'nevooronni@gmail.com', '{}', True, False)\
+        ".format(generate_password_hash('asf8$#Er0')))
+      conn.commit()
 
   def insert(self, query):
     """ 
@@ -72,38 +111,4 @@ class DatabaseConnection:
     cur.execute(query)
     conn.commit()
 
-  def drop_tables(self):
-    """ 
-      method to drop tables 
-    """
-
-    for table in tables:
-      cur.execute('DROP TABLE IF EXISTS {} CASCADE'.format(table))
-
-      conn.commit()
-
-  def create_tables(self):
-    """ 
-      method to create tables 
-    """
-
-    for query in create_table_queries:
-      cur.execute(query)
-
-    conn.commit()
-
-  def create_admin(self):
-    """ 
-      method to insert super admin into the db 
-    """
-
-    user_query = "SELECT * FROM users WHERE username = 'tirgei'"
-    cur.execute(user_query)
-    result = cur.fetchone()
-
-    if not result:
-      cur.execute("INSERT INTO users (firstname, lastname, othername, phoneNumber, email,\
-      password, isAdmin, isPolitician) VALUES ('Neville', 'Oronni', 'Gerald', '0712345678',\
-      'nevooronni@gmail.com', '{}', True, False)\
-        ".format(generate_password_hash('asf8$#Er0')))
-      conn.commit()
+  

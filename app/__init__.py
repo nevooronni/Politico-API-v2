@@ -36,17 +36,19 @@ def method_not_allowed(e):
   }), 405)
 
 
-# def initialize_database(config_name):
-#     """method for initializing the db """
+def initialize_database(config_name):
+    """method for initializing the db """
 
-#     try:
-#       db = DatabaseConnection()
-#       db.init_connection(config_name)
-#       db.create_tables()
-#       db.create_admin()
+    print(config_name)
+    try:
+      db = DatabaseConnection()
+      db.init_connection(config_name)
+      db.drop_tables()
+      db.create_tables()
+      db.create_admin()
 
-#     except Exception as error:
-#         print('Error initiating DB: {}'.format(str(error)))
+    except Exception as error:
+        print('Error initiating DB: {}'.format(str(error)))
 
 
 def create_app(config_name):
@@ -58,7 +60,6 @@ def create_app(config_name):
   app.config.from_object(app_config[config_name])
   app.config.from_pyfile('config.py')
   app.secret_key = os.getenv('SECRET_KEY')
-  dsn = app_config[config_name].DATABASE_DSN
   
   #Initialize JWT
   jwt = JWTManager(app)
@@ -68,11 +69,9 @@ def create_app(config_name):
     jti = token['jti']
     return RevokedTokenModel().is_blacklisted(jti)
 
-  
-
   #Initialize database
-  # DatabaseConnection(dsn, config_name)
-  
+  initialize_database(config_name)
+
   #register blueprint
   # app.register_blueprint(users_blueprint)
   # app.register_blueprint(parties_blueprint)
