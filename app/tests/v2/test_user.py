@@ -38,7 +38,7 @@ class TestUser(BaseTest):
       Tesst index welcome route
     """
 
-    res = self.client.get('/api/v1/index', headers={'Content-Type': 'application/json'})
+    res = self.client.get('/api/v2/index', headers={'Content-Type': 'application/json'})
     data = res.get_json()
 
     self.assertEqual(res.status_code, 200)
@@ -132,26 +132,26 @@ class TestUser(BaseTest):
   #   self.assertEqual(data['status'], 400)
   #   self.assertEqual(data['message'], 'Invalid data, please fill all required fields')
 
-  # def test_signup_with_valid_data(self):
-  #   """
-  #     Test signup with valid data
-  #   """
+  def test_signup_with_valid_data(self):
+    """
+      Test signup with valid data
+    """
 
-  #   user = {
-  #     'firstname': 'Derrick',
-  #     'lastname': 'Chisora',
-  #     'email': 'derrick@gmail.com',
-  #     'password': 'abcD$234g',
-  #     'phoneNumber': '0725928106'  
-  #   }
+    user = {
+      'firstname': 'Derrick',
+      'lastname': 'Chisora',
+      'email': 'derrick@gmail.com',
+      'password': 'abcD$234g',
+      'phoneNumber': '0725928106'  
+    }
 
-  #   res = self.client.post('/api/v1/signup', json=user, headers={'Content-Type': 'applicatioin/json'})
-  #   data = res.get_json()
+    res = self.client.post('/api/v2/auth/signup', json=user, headers={'Content-Type': 'application/json'})
+    data = res.get_json()
 
-  #   self.assertEqual(res.status_code, 201)
-  #   self.assertEqual(data['status'], 201)
-  #   self.assertEqual( self.get_value(data, 'message'), 'User created successfully')
-  #   self.assertEqual( self.get_value2(data, 'phoneNumber'), user['phoneNumber'])
+    self.assertEqual(res.status_code, 201)
+    self.assertEqual(data['status'], 201)
+    self.assertEqual( self.get_value(data, 'message'), 'User created successfully')
+    self.assertEqual( self.get_value2(data, 'phoneNumber'), user['phoneNumber'])
 
   # def test_signup_with_existing_email(self):
   #   """
@@ -221,69 +221,69 @@ class TestUser(BaseTest):
   #   self.assertEqual(data_2['message'], 'Error phone number already exists')
 
   
-  # def test_refresh_access_token_with_no_token(self):
-  #   """
-  #     Test refresh access token method without passing refresh token
-  #   """
+  def test_refresh_access_token_with_no_token(self):
+    """
+      Test refresh access token method without passing refresh token
+    """
 
-  #   res = self.client.post('/api/v1/refresh-token')
-  #   data = res.get_json()
+    res = self.client.post('/api/v2/auth/refresh-token')
+    data = res.get_json()
 
-  #   self.assertEqual(res.status_code, 401)
-  #   self.assertEqual(data['msg'], 'Missing Authorization Header')
+    self.assertEqual(res.status_code, 401)
+    self.assertEqual(data['msg'], 'Missing Authorization Header')
 
-  # def test_refresh_access_token_with_token(self):
-  #   """
-  #     Test refresh access token method with access token
-  #   """
+  def test_refresh_access_token_with_token(self):
+    """
+      Test refresh access token method with access token
+    """
 
-  #   user = {
-  #     'firstname': 'Diana',
-  #     'lastname': 'Mwiti',
-  #     'email': 'diana@gmail.com',
-  #     'password': 'abcD$234g',
-  #     'phoneNumber': '0799244265'  
-  #   }
+    user = {
+      'firstname': 'Diana',
+      'lastname': 'Mwiti',
+      'email': 'diana@gmail.com',
+      'password': 'abcD$234g',
+      'phoneNumber': '0799244265'  
+    }
 
-  #   res_1 = self.client.post('/api/v1/signup', json=user, headers={'Content-Type': 'application/json'})
-  #   data_1 = res_1.get_json()
+    res_1 = self.client.post('/api/v2/auth/signup', json=user, headers={'Content-Type': 'application/json'})
+    data_1 = res_1.get_json()
 
-  #   self.assertEqual(res_1.status_code, 201)
-  #   self.assertEqual(data_1['status'], 201)
-  #   data_1_token = self.get_value(data_1, 'access_token')
+    self.assertEqual(res_1.status_code, 201)
+    self.assertEqual(data_1['status'], 201)
+    data_1_token = self.get_value(data_1, 'access_token')
 
-  #   res = self.client.post('/api/v1/refresh-token', headers={'Authorization': 'Bearer {}'.format(data_1_token)})
-  #   data = res.get_json()
+    res = self.client.post('/api/v2/auth/refresh-token', headers={'Authorization': 'Bearer {}'.format(data_1_token)})
+    data = res.get_json()
 
-  #   self.assertEqual(res.status_code, 422)
-  #   self.assertEqual(data['msg'], 'Only refresh tokens are allowed')
+    self.assertEqual(res.status_code, 422)
+    self.assertEqual(data['msg'], 'Only refresh tokens are allowed')
 
-  # def test_refresh_access_token(self):
-  #   """
-  #     Test refresh access token
-  #   """
+  def test_refresh_access_token(self):
+    """
+      Test refresh access token
+    """
 
-  #   user = {
-  #     'firstname': 'Micheal',
-  #     'lastname': 'Omondi',
-  #     'email': 'micheal@gmail.com',
-  #     'password': 'abcD$234g',
-  #     'phoneNumber': '0745634231'  
-  #   }
+    user = {
+      'firstname': 'Micheal',
+      'lastname': 'Omondi',
+      'email': 'micheal@gmail.com',
+      'password': 'abcD$234g',
+      'phoneNumber': '0745634231'  
+    }
 
-  #   res_1 = self.client.post('/api/v1/signup', json=user, headers={'Content-Type': 'application/json'})
-  #   data_1 = res_1.get_json()
+    res_1 = self.client.post('/api/v2/auth/signup', json=user, headers={'Content-Type': 'application/json'})
+    data_1 = res_1.get_json()
 
-  #   self.assertEqual(res_1.status_code, 201)
-  #   self.assertEqual(data_1['status'], 201)
-  #   data_1_refresh_token = self.get_value(data_1, 'refresh_token')
+    self.assertEqual(res_1.status_code, 201)
+    self.assertEqual(data_1['status'], 201)
+    data_1_refresh_token = self.get_value(data_1, 'refresh_token')
 
-  #   res = self.client.post('/api/v1/refresh-token', headers={'Authorization': 'Bearer {}'.format(data_1_refresh_token)})
-  #   data = res.get_json()
+    res = self.client.post('/api/v2/auth/refresh-token', headers={'Authorization': 'Bearer {}'.format(data_1_refresh_token)})
+    data = res.get_json()
 
-  #   self.assertEqual(res.status_code, 200)
-  #   self.assertEqual(data['status'], 200)
-  #   self.assertEqual(data['message'], 'Token refreshed succesfully')
+    self.assertEqual(res.status_code, 200)
+    self.assertEqual(data['status'], 200)
+    self.assertEqual(data['message'], 'Token refreshed succesfully')
 
   
   # def test_signin_user(self):

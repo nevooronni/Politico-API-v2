@@ -18,43 +18,43 @@ class IndexAPI(MethodView):
     })
 
 
-# class UserSignupAPI(MethodView):
-#   """
-#     class for user route endpoint
-#   """
+class UserSignupAPI(MethodView):
+  """
+    class for user route endpoint
+  """
   
-#   def post(self):
-#       """ Endpoint functiom to register new user """
-#       res_data = request.get_json()
+  def post(self):
+      """ Endpoint functiom to register new user """
+      res_data = request.get_json()
 
-#       if not res_data:
-#           return jsonify({'status': 400, 'message': 'No data provided'}), 400
+      if not res_data:
+          return jsonify({'status': 400, 'message': 'No data provided'}), 400
 
-#       data, errors = UserSchema().load(res_data)
-#       if errors:
-#           return jsonify({'status': 400, 'message' : 'Invalid data, please fill all required fields', 'errors': errors}), 400
+      data, errors = UserSchema().load(res_data)
+      if errors:
+          return jsonify({'status': 400, 'message' : 'Invalid data, please fill all required fields', 'errors': errors}), 400
 
-#       if db.user_exists('phoneNumber', data['phoneNumber']):
-#           return jsonify({'status': 409, 'message' : 'Error phone number already exists'}), 409
+      if db.user_exists('phoneNumber', data['phoneNumber']):
+          return jsonify({'status': 409, 'message' : 'Error phone number already exists'}), 409
 
-#       if db.user_exists('email', data['email']):
-#           return jsonify({'status': 409, 'message' : 'Error email already exists'}), 409
+      if db.user_exists('email', data['email']):
+          return jsonify({'status': 409, 'message' : 'Error email already exists'}), 409
 
-#       new_user = db.save(data)
-#       result = UserSchema(exclude=['password']).dump(new_user).data
+      new_user = db.save(data)
+      result = UserSchema(exclude=['password']).dump(new_user).data
 
-#       # Generate access 
-#       access_token = create_access_token(identity=new_user['id'], fresh=True)
-#       refresh_token = create_refresh_token(identity=new_user['id'])
-#       return jsonify({
-#           'status': 201, 
-#           'data': [{
-#             'user': result,
-#             'message' : 'User created successfully', 
-#             'access_token' : access_token, 
-#             'refresh_token' : refresh_token 
-#             }] 
-#           }), 201
+      # Generate access 
+      access_token = create_access_token(identity=new_user['id'], fresh=True)
+      refresh_token = create_refresh_token(identity=new_user['id'])
+      return jsonify({
+          'status': 201, 
+          'data': [{
+            'user': result,
+            'message' : 'User created successfully', 
+            'access_token' : access_token, 
+            'refresh_token' : refresh_token 
+            }] 
+          }), 201
 
 # class UserSigninAPI(MethodView):
 #   """
@@ -101,26 +101,26 @@ class IndexAPI(MethodView):
 #         }] 
 #       }), 200
 
-# class TokenAPI(MethodView):
-#   """
-#     class for jwt endpoints
-#   """
+class TokenAPI(MethodView):
+  """
+    class for jwt endpoints
+  """
 
-#   @jwt_refresh_token_required
-#   def post(self):
-#     """
-#       Endpoint function to refresh tokens
-#     """
-#     current_user = get_jwt_identity()
-#     access_token = create_access_token(identity=current_user)
-#     return jsonify({
-#       'status': 200, 
-#       'message': 'Token refreshed succesfully', 
-#       'access_token': access_token
-#     }), 200
+  @jwt_refresh_token_required
+  def post(self):
+    """
+      Endpoint function to refresh tokens
+    """
+    current_user = get_jwt_identity()
+    access_token = create_access_token(identity=current_user)
+    return jsonify({
+      'status': 200, 
+      'message': 'Token refreshed succesfully', 
+      'access_token': access_token
+    }), 200
 
 index_view = IndexAPI.as_view('index_api') 
-# signup_auth_view = UserSignupAPI.as_view('signup_auth_api')
+signup_auth_view = UserSignupAPI.as_view('signup_auth_api')
 # signin_auth_view = UserSigninAPI.as_view('signin_auth_api')
-# token_view = TokenAPI.as_view('token_api')
+token_view = TokenAPI.as_view('token_api')
 
