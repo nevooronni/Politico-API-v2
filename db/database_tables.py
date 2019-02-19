@@ -1,0 +1,46 @@
+tables = [
+    'users',
+    'parties',
+    'offices',
+    'revoked_tokens'
+]
+
+create_table_queries = [
+    """
+    CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY NOT NULL,
+        firstname VARCHAR(250) NOT NULL,
+        lastname VARCHAR(250) NOT NULL,
+        othername VARCHAR(250) NULL,
+        password VARCHAR(250) NOT NULL,
+        phonenumber VARCHAR(250) NOT NULL,
+        email VARCHAR(250) NOT NULL,
+        isAdmin BOOLEAN DEFAULT FALSE,
+        isPolitician BOOLEAN DEFAULT FALSE
+    )
+    """,
+
+    """
+    CREATE TABLE IF NOT EXISTS parties (
+        id serial PRIMARY KEY NOT NULL,
+        name VARCHAR(20) NOT NULL,
+        hqAddress VARCHAR(24) NOT NULL, 
+        logoUrl VARCHAR(256) NULL
+    )
+    """,
+
+    """
+    CREATE TABLE IF NOT EXISTS offices (
+        id serial PRIMARY KEY NOT NULL,
+        type VARCHAR(20) NOT NULL,
+        name VARCHAR(20) NOT NULL 
+    )
+    """,
+
+    """
+    CREATE TABLE IF NOT EXISTS revoked_tokens (
+        id SERIAL PRIMARY KEY NOT NULL,
+        jti VARCHAR NOT NULL
+    )
+    """
+]
