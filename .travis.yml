@@ -11,8 +11,6 @@ services:
 
 before_script:
   - psql -c 'create database politico_test;' -U postgres
-  - psql -c "create user postgres_nevo with password 'bar';" -U postgres
-
 script:
   - pytest --cov=app
 

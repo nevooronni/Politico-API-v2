@@ -318,13 +318,14 @@ class TestUser(BaseTest):
     user = {
       'firstname': 'Neville',
       'lastname': 'Oronni',
-      'email': 'nevooronni@gmail.com',
+      'email': 'oronni@gmail.com',
       'password': 'abcD$234g',
       'phonenumber': '0733244265'  
     }
 
     res_1 = self.client.post('/api/v2/auth/signup', json=user, headers={'Content-Type': 'application/json'})
     data_1 = res_1.get_json()
+    print(data_1)
 
     self.assertEqual(res_1.status_code, 201)
     self.assertEqual(data_1['status'], 201)
