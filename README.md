@@ -1,7 +1,7 @@
 # Politico-API
 
 [![Build Status](https://travis-ci.org/nevooronni/Politico-API-v2.svg?branch=develop)](https://travis-ci.org/nevooronni/Politico-API-v2)
-[![Coverage Status](https://coveralls.io/repos/github/nevooronni/Politico-API-v2/badge.svg?branch=develop)](https://coveralls.io/github/nevooronni/Politico-API-v2?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/nevooronni/Politico-API-v2/badge.svg?branch=ft-user-signup-163905397)](https://coveralls.io/github/nevooronni/Politico-API-v2?branch=ft-user-signup-163905397)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  [![PEP8](https://img.shields.io/badge/code%20style-pep8A-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
 
 
@@ -69,7 +69,7 @@ pip install -r requirements.txt
 ```
 6. Set environment variables
 ```
-mv .env.run .env 
+mv .env.example .env 
 
 source .env 
 ```
