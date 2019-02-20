@@ -40,7 +40,7 @@ class User(object):
 
     return data
 
-  def find_user_by_phonenumber(self, key, phoneNumber):
+  def find_user_by_phonenumber(self, key, phonenumber):
     """
       method to find a user by username
     """
@@ -48,7 +48,7 @@ class User(object):
     # return got_user[0]
 
     query = "SELECT * FROM {} WHERE {} = '{}'".format(
-        table, key, value)
+        table, key, phonenumber)
             
     data = db.fetch_one(query)
     return data

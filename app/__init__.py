@@ -29,7 +29,7 @@ def bad_request(e):
   """
   return make_response(jsonify({
     "status": 400,
-    "message": "url does not exist"
+    "message": "bad request"
   }), 400)
 
 def method_not_allowed(e):
@@ -83,6 +83,8 @@ def create_app(config_name):
   # app.register_blueprint(offices_blueprint)
   app.register_error_handler(404, page_not_found)
   app.register_error_handler(405, method_not_allowed)
+  app.register_error_handler(400, bad_request)
+
 
   #v1 method view routes
   app.add_url_rule('/api/v2/index', view_func=index_view, methods=['GET'])
