@@ -34,15 +34,15 @@ class UserSignupAPI(MethodView):
       if errors:
           return jsonify({'status': 400, 'message' : 'Invalid data, please fill all required fields', 'errors': errors}), 400
 
-      if db.user_exists('phoneNumber', data['phoneNumber']):
+      if db.user_exists('phonenumber', data['phonenumber']):
           return jsonify({'status': 409, 'message' : 'Error phone number already exists'}), 409
 
       if db.user_exists('email', data['email']):
           return jsonify({'status': 409, 'message' : 'Error email already exists'}), 409
-
+      
       new_user = db.save(data)
       result = UserSchema(exclude=['password']).dump(new_user).data
-
+      print(result)
       # Generate access 
       access_token = create_access_token(identity=new_user['id'], fresh=True)
       refresh_token = create_refresh_token(identity=new_user['id'])
@@ -78,15 +78,15 @@ class UserSigninAPI(MethodView):
       abort(make_response(jsonify({'status': 400, 'message': 'Invalid data, please fill all required fields', 'errors': errors}), 400))
 
     try:
-      username = data['phoneNumber']
+      username = data['phonenumber']
       password = data['password']
     except:
       abort(make_response(jsonify({'status': 400, 'message': 'Invalid credentials'}), 400))
 
-    if not db.user_exists('phoneNumber', data['phoneNumber']):
+    if not db.user_exists('phonenumber', data['phonenumber']):
       abort(make_response(jsonify({'status': 404, 'message': 'user not found'}), 404))
 
-    user = db.find_user_by_phonenumber('phoneNumber', data['phoneNumber'])
+    user = db.find_user_by_phonenumber('phonenumber', data['phonenumber'])
     db.check_password(user['password'], password)
 
     #generate access token

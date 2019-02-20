@@ -15,8 +15,8 @@ create_table_queries = [
         password VARCHAR(250) NOT NULL,
         phonenumber VARCHAR(250) NOT NULL,
         email VARCHAR(250) NOT NULL,
-        isAdmin BOOLEAN DEFAULT FALSE,
-        isPolitician BOOLEAN DEFAULT FALSE
+        isadmin BOOLEAN DEFAULT FALSE,
+        ispolitician BOOLEAN DEFAULT FALSE
     )
     """,
 

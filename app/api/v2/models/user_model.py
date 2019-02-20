@@ -1,8 +1,9 @@
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-from ..utils.utils import generate_id
+from db.database_config import DatabaseConnection
 
-users = []
+table = 'users'
+db = DatabaseConnection()
 
 class User(object):
   """
@@ -14,28 +15,43 @@ class User(object):
       method to save new user
     """
 
-    data['id'] = generate_id(users)
-    data['password'] = generate_password_hash(data['password'])
-    data['createdOn'] = datetime.now()
+    password = generate_password_hash(data['password'])
     data['isAdmin'] = False
+    data['isPolitician'] = False
+ 
+    query = "INSERT INTO {} (firstname, lastname, phonenumber, email, password, isAdmin, isPolitician) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}') RETURNING *".format(
+        table, data['firstname'], 
+        data['lastname'], data['phonenumber'], data['email'], password, data['isAdmin'], data['isPolitician']
+      )
 
-    users.append(data)
+    data = db.insert(query)
+    print(data)
     return data
     
   def user_exists(self, key, value):
     """
      method to check if a user exists
     """
+    query = "SELECT * FROM {} WHERE {} = '{}'".format(
+        table, key, value)
 
-    got_user = [user for user in users if value == user[key]]
-    return len(got_user) > 0
+    data = db.fetch_one(query)
+    return data
+
+    return data
 
   def find_user_by_phonenumber(self, key, phoneNumber):
     """
       method to find a user by username
     """
-    got_user = [user for user in users if user['phoneNumber'] == phoneNumber]
-    return got_user[0]
+    # got_user = [user for user in users if user['phoneNumber'] == phoneNumber]
+    # return got_user[0]
+
+    query = "SELECT * FROM {} WHERE {} = '{}'".format(
+        table, key, value)
+            
+    data = db.fetch_one(query)
+    return data
 
   def check_password(self, hash, password):
     """

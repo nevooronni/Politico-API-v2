@@ -12,8 +12,9 @@ class UserSchema(Schema):
   lastname = fields.Str(required=True, validate=(required))
   othername = fields.Str(required=False)
   password = fields.Str(required=True, validate=(password))
-  phoneNumber = fields.Str(required=True, validate=(required))
+  phonenumber = fields.Str(required=True, validate=(required))
   email = fields.Email(required=True, validate=(email))
-  passportUrl = fields.Str(required=False)
-  isAdmin = fields.Bool(dump_only=True)
+  passporturl = fields.Str(required=False)
+  isadmin = fields.Bool(dump_only=True)
+  ispolitician = fields.Bool(dump_only=True)
 

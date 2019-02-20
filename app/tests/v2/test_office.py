@@ -1,7 +1,7 @@
 # from flask import json
 # from .base_test import BaseTest
-# from app.api.v1.models.office_model import offices
-# from app.api.v1.models.user_model import users
+# from app.api.v2.models.office_model import offices
+# from app.api.v2.models.user_model import users
 
 
 # class TestPoliticalParty(BaseTest):
@@ -47,7 +47,7 @@
 #       'name': '',
 #     }
 
-#     self.res_1 = self.client.post('/api/v1/signup', json=self.super_user, headers={'Content-Type': 'application/json'})
+#     self.res_1 = self.client.post('/api/v2/auth/signup', json=self.super_user, headers={'Content-Type': 'application/json'})
 #     self.data_1 = self.res_1.get_json()
 #     self.data_1_token = self.get_value(self.data_1, 'access_token')
 
@@ -67,7 +67,7 @@
 #       method to sign up user and get access token 
 #     """
         
-#     res = self.client.post('/api/v1/signup', json=self.super_user)
+#     res = self.client.post('/api/v2/auth/signup', json=self.super_user)
 #     data = res.get_json()
 #     data_token = self.get_value(data, 'access_token')
 
@@ -89,7 +89,7 @@
 #       Test create office with no data provided
 #     """
     
-#     res = self.client.post('/api/v1/offices', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+#     res = self.client.post('/api/v2/offices', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
 #     data = res.get_json()
 
 #     self.assertEqual(res.status_code, 400)
@@ -102,7 +102,7 @@
 #     """
 
 #     office = {}
-#     res = self.client.post('/api/v1/offices', json=json.dumps(office), headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+#     res = self.client.post('/api/v2/offices', json=json.dumps(office), headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
 #     data = res.get_json()
 
 #     self.assertEqual(res.status_code, 400)
@@ -114,7 +114,7 @@
 #       Test create office method with missing fields
 #     """
 
-#     res = self.client.post('/api/v1/offices', json=self.office_with_no_name, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+#     res = self.client.post('/api/v2/offices', json=self.office_with_no_name, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
 #     data = res.get_json()
 
 #     self.assertEqual(res.status_code, 400)
@@ -126,7 +126,7 @@
 #       Test create office method with empty fields
 #     """
 
-#     res = self.client.post('/api/v1/offices', json=self.office_with_empty_name, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+#     res = self.client.post('/api/v2/offices', json=self.office_with_empty_name, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
 #     data = res.get_json()
 
 #     self.assertEqual(res.status_code, 400)
@@ -141,13 +141,13 @@
 #     data_1 = self.res_1.get_json()
 #     data_1_token = self.get_value(data_1, 'access_token')
 
-#     res = self.client.post('/api/v1/offices', json=self.office, headers={'Authorization': 'Bearer {}'.format(data_1_token)})
+#     res = self.client.post('/api/v2/offices', json=self.office, headers={'Authorization': 'Bearer {}'.format(data_1_token)})
 #     data_1 = res.get_json()
 
 #     self.assertEqual(res.status_code, 201)
 #     self.assertEqual(data_1['status'], 201)
 
-#     res_2 = self.client.post('/api/v1/offices', json=self.office_2, headers={'Authorization': 'Bearer {}'.format(data_1_token)})
+#     res_2 = self.client.post('/api/v2/offices', json=self.office_2, headers={'Authorization': 'Bearer {}'.format(data_1_token)})
 #     data_2 = res_2.get_json()
 
 #     self.assertEqual(res_2.status_code, 409)
@@ -162,7 +162,7 @@
 
 #     data_1_token = self.get_value(data_1, 'access_token')
 
-#     res = self.client.post('/api/v1/offices', json=self.office, headers={'Authorization': 'Bearer {}'.format(data_1_token)})
+#     res = self.client.post('/api/v2/offices', json=self.office, headers={'Authorization': 'Bearer {}'.format(data_1_token)})
 #     data = res.get_json()
 
 #     self.assertEqual(res.status_code, 201)
@@ -174,10 +174,10 @@
 #       Test method for fetching a specific office
 #     """
 
-#     self.client.post('/api/v1/offices', json=self.office, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
-#     self.client.post('/api/v1/offices', json=self.office_3, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+#     self.client.post('/api/v2/offices', json=self.office, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+#     self.client.post('/api/v2/offices', json=self.office_3, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
 
-#     res = self.client.get('/api/v1/offices/2', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+#     res = self.client.get('/api/v2/offices/2', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
 #     data = res.get_json()
 
 #     self.assertEqual(res.status_code, 200)
@@ -188,7 +188,7 @@
 #     """
 #       Test method for fetching an office that doesn't exist
 #     """
-#     res = self.client.get('/api/v1/offices/14', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+#     res = self.client.get('/api/v2/offices/14', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
 #     data = res.get_json()
 
 #     self.assertEqual(res.status_code, 404)
@@ -200,10 +200,10 @@
 #     """ 
 #       Test method for fetching all offices
 #     """
-#     self.client.post('/api/v1/offices', json=self.office, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
-#     self.client.post('/api/v1/offices', json=self.office_3, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+#     self.client.post('/api/v2/offices', json=self.office, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+#     self.client.post('/api/v2/offices', json=self.office_3, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
 
-#     res = self.client.get('/api/v1/offices', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+#     res = self.client.get('/api/v2/offices', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
 #     data = res.get_json()
 
 #     office_dict = data['data'][0]
@@ -217,10 +217,10 @@
 #       Test method for deleting an office successfully
 #      """
 
-#     self.client.post('/api/v1/offices', json=self.office, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
-#     self.client.post('/api/v1/offices', json=self.office_3, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+#     self.client.post('/api/v2/offices', json=self.office, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+#     self.client.post('/api/v2/offices', json=self.office_3, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
 
-#     res = self.client.delete('/api/v1/offices/2', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+#     res = self.client.delete('/api/v2/offices/2', headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
 #     data = res.get_json()
 
 #     self.assertEqual(res.status_code, 200)
