@@ -15,13 +15,26 @@ class User(object):
       method to save new user
     """
 
+    othername = 'othername'
+    passporturl = 'passporturl'
+
+    def set_field_value(data, value):
+      """
+        sets value for not required fields
+      """
+
+      if value in data:
+        return data[value]
+      else:
+        return None   
+
     password = generate_password_hash(data['password'])
     data['isAdmin'] = False
     data['isPolitician'] = False
  
-    query = "INSERT INTO {} (firstname, lastname, phonenumber, email, password, isAdmin, isPolitician) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}') RETURNING *".format(
+    query = "INSERT INTO {} (firstname, lastname, othername, phonenumber, email, password, passporturl, isAdmin, isPolitician) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}','{}') RETURNING *".format(
         table, data['firstname'], 
-        data['lastname'], data['phonenumber'], data['email'], password, data['isAdmin'], data['isPolitician']
+        data['lastname'], set_field_value(data, othername), data['phonenumber'], data['email'], password, set_field_value(data, passporturl), data['isAdmin'], data['isPolitician']
       )
 
     data = db.insert(query)

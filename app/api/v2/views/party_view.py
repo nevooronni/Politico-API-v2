@@ -54,7 +54,7 @@ class PoliticalPartyAPI(MethodView):
         }] 
       }), 404))
     
-    party = db.fetch_party_by_id(party_id)
+    party = db.fetch_party_by_id('id', party_id)
     data = []
     data.append(PoliticalPartySchema().dump(party).data)
     return jsonify({
