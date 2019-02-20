@@ -1,54 +1,62 @@
-# from ....database_config import init_db
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from db.database_config import DatabaseConnection
 
-# class User(object):
-#   """
-#     Model class for user object
-#   """
+table = 'users'
+db = DatabaseConnection()
 
-#   def save(self, data):
-#     """
-#       method to save new user
-#     """
+class User(object):
+  """
+    Model class for user object
+  """
 
-#     con = init_db()
-#     cur = con.cursor()
+  def save(self, data):
+    """
+      method to save new user
+    """
 
-#     data['password'] = generate_password_hash(data['password'])
-#     data['isAdmin'] = False
+    password = generate_password_hash(data['password'])
+    data['isAdmin'] = False
+    data['isPolitician'] = False
+ 
+    query = "INSERT INTO {} (firstname, lastname, phonenumber, email, password, isAdmin, isPolitician) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}') RETURNING *".format(
+        table, data['firstname'], 
+        data['lastname'], data['phonenumber'], data['email'], password, data['isAdmin'], data['isPolitician']
+      )
 
-#     query = """ INSERT INTO users (password, isAdmin) VALUES \
-#                   ( %(password)s, %(isAdmin)s)  RETURNING user_id """
+    data = db.insert(query)
+    print(data)
+    return data
     
-#     cur.execute(query, data)
-#     user_id = cur.fetchone()[0]
-#     con.commit()
-#     cur.close()
-#     return user_id
+  def user_exists(self, key, value):
+    """
+     method to check if a user exists
+    """
+    query = "SELECT * FROM {} WHERE {} = '{}'".format(
+        table, key, value)
 
-#     users.append(data)
-#     return data
-    
-  # def user_exists(self, key, value):
-  #   """
-  #    method to check if a user exists
-  #   """
+    data = db.fetch_one(query)
+    return data
 
-  #   got_user = [user for user in users if value == user[key]]
-  #   return len(got_user) > 0
+    return data
 
-  # def find_user_by_phonenumber(self, key, phoneNumber):
-  #   """
-  #     method to find a user by username
-  #   """
-  #   got_user = [user for user in users if user['phoneNumber'] == phoneNumber]
-  #   return got_user[0]
+  def find_user_by_phonenumber(self, key, phonenumber):
+    """
+      method to find a user by username
+    """
+    # got_user = [user for user in users if user['phoneNumber'] == phoneNumber]
+    # return got_user[0]
 
-  # def check_password(self, hash, password):
-  #   """
-  #     method to check if the passwords match
-  #   """
+    query = "SELECT * FROM {} WHERE {} = '{}'".format(
+        table, key, phonenumber)
+            
+    data = db.fetch_one(query)
+    return data
 
-  #   return check_password_hash(hash, password)
+  def check_password(self, hash, password):
+    """
+      method to check if the passwords match
+    """
+
+    return check_password_hash(hash, password)
 
