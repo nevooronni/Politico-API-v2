@@ -33,8 +33,8 @@ create_table_queries = [
     """
     CREATE TABLE IF NOT EXISTS offices (
         id serial PRIMARY KEY NOT NULL,
-        type VARCHAR(20) NOT NULL,
-        name VARCHAR(20) NOT NULL 
+        type VARCHAR(250) NOT NULL,
+        name VARCHAR(250) NOT NULL 
     )
     """,
 
