@@ -39,6 +39,16 @@ create_table_queries = [
     """,
 
     """
+    CREATE TABLE IF NOT EXISTS candidates (
+        id SERIAL PRIMARY KEY NOT NULL,
+        office INTEGER NOT NULL,
+        user_id INTEGER NOT NULL,
+        FOREIGN KEY (office) REFERENCES offices(id) ON DELETE CASCADE,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+    """,
+
+    """
     CREATE TABLE IF NOT EXISTS revoked_tokens (
         id SERIAL PRIMARY KEY NOT NULL,
         jti VARCHAR NOT NULL

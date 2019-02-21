@@ -54,7 +54,6 @@ class TestPoliticalParty(BaseTest):
 
     self.res_1 = self.client.post('/api/v2/auth/signup', json=self.super_user, headers={'Content-Type': 'application/json'})
     self.data_1 = self.res_1.get_json()
-    print(self.data_1)
     self.data_1_token = self.get_value(self.data_1, 'access_token')
 
 
