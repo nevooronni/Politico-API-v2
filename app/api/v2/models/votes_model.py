@@ -47,6 +47,22 @@ class Votes(Model):
     data = db.fetch_all(query)
     return data
 
+  def fetch_results(self, office_id):
+    """
+      method for fetching all results for a particular office
+    """
+
+    all_votes = self.fetch_all_votes()
+    specific_office_votes = []
+    all_votes = self.fetch_all_votes()
+    for vote in all_votes:
+      if (vote['office'] == office_id):
+        specific_office_votes.append(vote)
+        print(specific_office_votes)
+        return specific_office_votes
+      else:
+        specific_office_votes
+
   
   def check_if_vote_exists_for_specific_office(self, key, value, value2):
     """

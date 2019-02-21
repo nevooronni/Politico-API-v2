@@ -171,8 +171,8 @@ class TestVote(BaseTest):
     data_4 = res.get_json()
     self.assertEqual(res_4.status_code, 201)
 
-    res_5 = self.client.get('/api/v2/office/2/result', headers={'Authorization': 'Bearer {}'.format(self.data_14_token)})
-    data_5 = res.get_json()
-    self.assertEqual(res_5.status_code, 200)
-    self.assertEqual(res_5.status_code, 200)
-    self.assertEqual(data_5['status'], 200)
+    response = self.client.get('/api/v2/office/2/result', headers={'Authorization': 'Bearer {}'.format(self.data_14_token)})
+    result = response.get_json()
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(result['status'], 200)
+    self.assertEqual(self.get_value(result, 'message'), 'fetched votes successfully')

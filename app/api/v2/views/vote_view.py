@@ -69,29 +69,23 @@ class VoteAPI(MethodView):
       }]
     }), 201
 
-class FetchVotesAPI(MethodView):
-  """
-    class for all votes method views
-  """
-
   @jwt_required
   def get(self, office_id):
     """
       Endpoint for fetching all votes
     """
-
-    votes = db_votes.fetch_all_votes()
+    votes = db_votes.fetch_results(office_id)
     response = VoteSchema(many=True).dump(votes).data
     return jsonify({
       'status': 200, 
       'data':[{
+        'message': 'fetched votes successfully',
         'votes': response
         }]
       }), 200
 
-
 create_vote_view = VoteAPI.as_view('create_vote_api')
-fetch_votes_view = FetchVotesAPI.as_view('fetch_votes_view')
+fetch_votes_view = VoteAPI.as_view('fetch_votes_api')
 
 
 

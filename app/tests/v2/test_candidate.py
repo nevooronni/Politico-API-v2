@@ -70,7 +70,6 @@ class TestCandidate(BaseTest):
 
     res = self.client.post('/api/v2/offices/2/register', json=self.candidate, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
     data = res.get_json()
-    print(data)
 
     self.assertEqual(res.status_code, 201)
     self.assertEqual(data['status'], 201)
