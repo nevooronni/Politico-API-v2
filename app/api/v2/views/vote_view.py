@@ -41,7 +41,7 @@ class VoteAPI(MethodView):
     return jsonify({
       'status': 201, 
       'data':[{
-        'message': 'vote created succesfully', 
+        'message': 'voted succesfully', 
         'candidate': response
       }]
     }), 201
