@@ -13,6 +13,17 @@ def required(value):
   elif value:
     return value
 
+def is_integer(value):
+  """
+    validates field if it is an integer
+  """
+
+  try:
+    field = int(value)
+  except ValueError:
+      raise ValidationError('field type should be an integer')
+
+
 def email(value):
   """
     Function to validate email format

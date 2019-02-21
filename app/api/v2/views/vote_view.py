@@ -26,6 +26,13 @@ class VoteAPI(MethodView):
 
     req_data = request.get_json()
 
+    if not req_data:
+      abort(make_response(jsonify({'status': 400, 'message': 'No data provided'}), 400))
+
+    data, errors = VoteSchema().load(req_data)
+    if errors:
+      abort(make_response(jsonify({'status': 400, 'message': 'Invalid data, please fill all required fields', 'errors': errors}), 400))
+      
     if not db_user.user_exists('id', req_data['voter']):
       abort(make_response(jsonify({
         'status': 404,
@@ -50,13 +57,6 @@ class VoteAPI(MethodView):
         }] 
       }), 404))
 
-    if not req_data:
-      abort(make_response(jsonify({'status': 400, 'message': 'No data provided'}), 400))
-
-    data, errors = VoteSchema().load(req_data)
-    if errors:
-      abort(make_response(jsonify({'status': 400, 'message': 'Invalid data, please fill all required fields', 'errors': errors}), 400))
-    
     if db_votes.vote_exists('voter', data['voter']):
           return jsonify({'status': 409, 'message' : 'You already voted'}), 409
 
