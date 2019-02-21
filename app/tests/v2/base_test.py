@@ -1,5 +1,6 @@
 import unittest
 from app import create_app
+from db.database_config import DatabaseConnection
 
 class BaseTest(unittest.TestCase):
   """
@@ -17,7 +18,10 @@ class BaseTest(unittest.TestCase):
     """
       Teardown method to run after all each test
     """
-    self.app = None
+    db = DatabaseConnection()
+    db.drop_tables()
+    db.create_tables()
+    db.create_admin()
 
 
 

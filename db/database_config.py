@@ -16,17 +16,14 @@ class DatabaseConnection:
 
     config = app_config[config_name]
 
-    database = config.DATABASE_NAME
-    user = config.DATABASE_USERNAME
-    password = config.DATABASE_PASSWORD
-    host = config.DATABASE_HOST
-    port = config.DATABASE_PORT
+    # database = config.DATABASE_NAME
+    # user = config.DATABASE_USERNAME
+    # password = config.DATABASE_PASSWORD
+    # host = config.DATABASE_HOST
+    # port = config.DATABASE_PORT
 
-    DSN = 'dbname={} user={} password={} host={} port={}'.format(
-        database, user, password, host, port
-    )
-
-    print(DSN)
+    database = config.DATABASE_URL
+    DSN = database
 
     try:
       global conn, cur

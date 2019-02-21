@@ -5,7 +5,7 @@ from app.api.v2.models.candidates_model import table
 from app.api.v2.models.user_model import table
 
 
-class TestPoliticalParty(BaseTest):
+class TestCandidate(BaseTest):
   """
     Test class for a political party
   """
@@ -15,6 +15,7 @@ class TestPoliticalParty(BaseTest):
       setup method for initializing varialbes
     """
     super().setUp()
+    super().tearDown()
 
     self.super_user = {
       'firstname': 'Donald',
@@ -34,18 +35,6 @@ class TestPoliticalParty(BaseTest):
       'name': 'MP Starehe constituency',
     }
 
-    self.political_party = {
-      'name': 'Jubilee Party',
-      'hqAddress': 'Pangani, Nairobi',
-      'logoUrl': 'app/img/jubilee.jpg'
-    }
-
-    self.political_party2 = {
-      'name': 'Nasa Party',
-      'hqAddress': 'Karen, Nairobi',
-      'logoUrl': 'app/img/nasa.jpg'
-    }
-
     self.candidate = {
       'user_id': 2
     }
@@ -58,11 +47,12 @@ class TestPoliticalParty(BaseTest):
     #create two offices
     self.res_4 = self.client.post('/api/v2/offices', json=self.office, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_1_token)})
     self.data_4 = self.res_1.get_json()
-    print(self.data_4)
     
     self.res_5 = self.client.post('/api/v2/offices', json=self.office_3, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_1_token)})
     self.data_5 = self.res_1.get_json()
+    print(self.data_5)
 
+ 
   def get_value(self, data, key):
     new_value = data['data'][0]
     return new_value[key]

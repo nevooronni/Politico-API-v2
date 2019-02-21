@@ -23,7 +23,7 @@ class DevelopmentConfig(Config):
     Configurations for Development.
   """
   DEBUG = True
-  DATABASE_NAME = os.getenv('DATABASE_NAME')
+  DATABASE_URL = os.getenv('DATABASE_URL')
 
 class TestingConfig(Config):
   """
@@ -32,14 +32,14 @@ class TestingConfig(Config):
 
   TESTING = True
   DEBUG = True
-  DATABASE_NAME = os.getenv('DATABASE_TEST_NAME')
+  DATABASE_URL = os.getenv('DATABASE_TEST_URL')
 
 class StagingConfig(Config):
   """
     Configuration for Staging
   """
   DEBUG = True
-  DATABASE_NAME = os.getenv('DATABASE_NAME')
+  DATABASE_URL = os.getenv('DATABASE_URL')
 
 class ProductionConfig(Config):
   """
@@ -48,7 +48,7 @@ class ProductionConfig(Config):
 
   DEBUG = False
   TESTING = False
-  DATABASE_NAME = os.getenv('DATABASE_NAME')
+  DATABASE_URL = os.getenv('DATABASE_URL')
 
 app_config = {
   'development': DevelopmentConfig,

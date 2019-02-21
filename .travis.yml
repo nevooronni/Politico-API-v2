@@ -6,11 +6,16 @@ python:
 install:
   - pip install -r requirements.txt
 
+env:
+    - SECRET_KEY="\x9a\x17\x9e\xba\xdf\x85\x9a\xaf\xaf\xb4\xd4\x17\xab\xd4k\xafmc\x1aP\x1f\xb2]e" 
+    DATABASE_URL="dbname='politico' user='postgres' password='postgres' host='localhost' port='5432'" TEST_DATABASE_URL="dbname='politico_test' user='postgres' password='postgres' host='localhost' port=5432"
+
 services:
   - postgresql
 
 before_script:
   - psql -c 'create database politico_test;' -U postgres
+
 script:
   - pytest --cov=app
 

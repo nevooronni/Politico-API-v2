@@ -2,12 +2,12 @@ from datetime import datetime
 from .base_model import Model
 from db.database_config import DatabaseConnection
 
-table = 'candidates'
+table = 'votes'
 db = DatabaseConnection(  )
 
-class Candidate(Model):
+class Votes(Model):
   """
-    Class for candidate object
+    Class for votes object
   """
 
   def __init__(self):
@@ -18,17 +18,17 @@ class Candidate(Model):
       method to add a new candidate
     """
 
-    query = "INSERT INTO {} (office, user_id) VALUES ('{}', '{}') RETURNING *".format(
-        table, data['office_id'], data['user_id']
+    query = "INSERT INTO {} (voter, office, candidate) VALUES ('{}', '{}', '{}') RETURNING *".format(
+        table, data['voter'], data['office'], data['candidate']
       )
 
     data = db.insert(query)
     print(data)
     return data
 
-  def candidate_exists(self, key, value):
+  def vote_exists(self, key, value):
     """
-     method to check if a candidate exists
+     method to check if a vote from specific user exists
     """
 
     query = "SELECT * FROM {} WHERE {} = '{}'".format(

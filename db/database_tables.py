@@ -2,7 +2,9 @@ tables = [
     'users',
     'parties',
     'offices',
-    'revoked_tokens'
+    'revoked_tokens',
+    'candidates',
+    'votes'
 ]
 
 create_table_queries = [
@@ -45,6 +47,18 @@ create_table_queries = [
         user_id INTEGER NOT NULL,
         FOREIGN KEY (office) REFERENCES offices(id) ON DELETE CASCADE,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+    """,
+
+    """
+    CREATE TABLE IF NOT EXISTS votes (
+        id SERIAL PRIMARY KEY NOT NULL,
+        office INTEGER NOT NULL,
+        candidate INTEGER NOT NULL,
+        voter INTEGER NOT NULL,
+        FOREIGN KEY (office) REFERENCES offices(id) ON DELETE CASCADE,
+        FOREIGN KEY (candidate) REFERENCES candidates(id) ON DELETE CASCADE,
+        FOREIGN KEY (voter) REFERENCES users(id) ON DELETE CASCADE
     )
     """,
 
