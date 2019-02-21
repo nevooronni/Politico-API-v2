@@ -26,6 +26,30 @@ class VoteAPI(MethodView):
 
     req_data = request.get_json()
 
+    if not db_user.user_exists('id', req_data['voter']):
+      abort(make_response(jsonify({
+        'status': 404,
+        'data':[{
+        'message': 'user not found', 
+        }] 
+      }), 404))
+
+    if not db_office.office_exists('id', req_data['office']):
+      abort(make_response(jsonify({
+        'status': 404,
+        'data':[{
+        'message': 'office not found', 
+        }] 
+      }), 404))
+
+    if not db_candidate.candidate_exists('id', req_data['candidate']):
+      abort(make_response(jsonify({
+        'status': 404,
+        'data':[{
+        'message': 'candidate not found', 
+        }] 
+      }), 404))
+
     if not req_data:
       abort(make_response(jsonify({'status': 400, 'message': 'No data provided'}), 400))
 
