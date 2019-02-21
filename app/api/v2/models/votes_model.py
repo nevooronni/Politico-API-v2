@@ -39,10 +39,27 @@ class Votes(Model):
 
   def fetch_all_votes(self):
     """
-      method for fetching all political offices
+      method for fetching all votes
     """
+    
     query = "SELECT * FROM {}".format(table)
 
     data = db.fetch_all(query)
     return data
+
+  
+  def check_if_vote_exists_for_specific_office(self, key, value, value2):
+    """
+      method to check if a candidates exists in a specific office
+    """
+    specific_office_votes = []
+    all_votes = self.fetch_all_votes()
+    for vote in all_votes:
+      if (vote['office'] == value2):
+        specific_office_votes.append(vote)
+        print(specific_office_votes)
+        if vote[key] == value:
+          return vote
+        else:
+          return False
   

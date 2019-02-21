@@ -36,4 +36,27 @@ class Candidate(Model):
 
     data = db.fetch_one(query)
     return data
-  
+
+  def fetch_all_candidates(self):
+    """
+      method for fetching all candidates
+    """
+    query = "SELECT * FROM {}".format(table)
+
+    data = db.fetch_all(query)
+    return data
+
+  def check_if_it_exists_for_specific_office(self, key, value, office_id):
+    """
+      method to check if a candidates exists in a specific office
+    """
+    specific_office_candidates = []
+    all_candidates = self.fetch_all_candidates()
+    for candidate in all_candidates:
+      if (candidate['office'] == office_id):
+        specific_office_candidates.append(candidate)
+        print(specific_office_candidates)
+        if candidate[key] == value:
+          return candidate
+        else:
+          return False

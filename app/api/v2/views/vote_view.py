@@ -15,7 +15,7 @@ db_votes = Votes()
 
 class VoteAPI(MethodView):
   """
-    class for political office method views
+    class for voting method views
   """
 
   @jwt_required
@@ -56,7 +56,7 @@ class VoteAPI(MethodView):
         }] 
       }), 404))
 
-    if db_votes.vote_exists('voter', data['voter']):
+    if db_votes.check_if_vote_exists_for_specific_office('voter', data['voter'], req_data['office']):
           return jsonify({'status': 409, 'message' : 'You already voted'}), 409
 
     new_vote = db_votes.save(data)
@@ -69,30 +69,29 @@ class VoteAPI(MethodView):
       }]
     }), 201
 
+class FetchVotesAPI(MethodView):
+  """
+    class for all votes method views
+  """
+
   @jwt_required
   def get(self, office_id):
+    """
+      Endpoint for fetching all votes
+    """
 
-    if not db_office.office_exists('id', office_id):
-      abort(make_response(jsonify({
-        'status': 404,
-        'data':[{
-        'message': 'office not found', 
-        }] 
-      }), 404))
-    
-    votes = db_votes.fetch_all()
-    data = []
-    data.append(VoteSchema().dump(votes).data)
-    print(votes)
+    votes = db_votes.fetch_all_votes()
+    response = VoteSchema(many=True).dump(votes).data
     return jsonify({
       'status': 200, 
       'data':[{
-        'votes': data
-      }]
-    }), 200
+        'votes': response
+        }]
+      }), 200
+
 
 create_vote_view = VoteAPI.as_view('create_vote_api')
-fetch_votes_view = VoteAPI.as_view('fetch_votes_view')
+fetch_votes_view = FetchVotesAPI.as_view('fetch_votes_view')
 
 
 
