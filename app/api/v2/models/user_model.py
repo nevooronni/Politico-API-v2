@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 from werkzeug.security import generate_password_hash, check_password_hash
 from db.database_config import DatabaseConnection
 
@@ -40,6 +41,14 @@ class User(object):
     data = db.insert(query)
     print(data)
     return data
+
+  def get_all_users(self):
+    """
+      Fetch all users
+    """
+    query = "SELECT * FROM {}".format(table)
+    users = db.fetch_all(query)
+    return json.dumps(users, default=str)
     
   def user_exists(self, key, value):
     """
