@@ -26,19 +26,27 @@ class TestVote(BaseTest):
     }
 
     self.super_user2 = {
-      'firstname': 'Donald',
-      'lastname': 'Trump',
-      'email': 'trump@gmail.com',
+      'firstname': 'Neville',
+      'lastname': 'Oronni',
+      'email': 'neville@gmail.com',
       'password': 'abcD$234g',
-      'phonenumber': '0781818181'
+      'phonenumber': '0745992344'
     }
 
     self.super_user3 = {
-      'firstname': 'Donald',
-      'lastname': 'Trump',
-      'email': 'trump@gmail.com',
+      'firstname': 'Frank',
+      'lastname': 'Ekirapa',
+      'email': 'frank@gmail.com',
       'password': 'abcD$234g',
-      'phonenumber': '0781818181'
+      'phonenumber': '0745123899'
+    }
+
+    self.super_user4 = {
+      'firstname': 'Paul',
+      'lastname': 'Wanjala',
+      'email': 'paul@gmail.com',
+      'password': 'abcD$234g',
+      'phonenumber': '0748888888'
     }
 
     self.office = {
@@ -90,8 +98,8 @@ class TestVote(BaseTest):
     }
 
     self.vote_4 = {
-      'voter': 1,
-      'office': 2,
+      'voter': 4,
+      'office': 2, 
       'candidate': 1,
     }
 
@@ -99,21 +107,22 @@ class TestVote(BaseTest):
     self.res_1 = self.client.post('/api/v2/auth/signup', json=self.super_user, headers={'Content-Type': 'application/json'})
     self.res_12 = self.client.post('/api/v2/auth/signup', json=self.super_user2, headers={'Content-Type': 'application/json'})
     self.res_13 = self.client.post('/api/v2/auth/signup', json=self.super_user3, headers={'Content-Type': 'application/json'})
-    self.data_1 = self.res_1.get_json()
-    self.data_1_token = self.get_value(self.data_1, 'access_token')
+    self.res_14 = self.client.post('/api/v2/auth/signup', json=self.super_user3, headers={'Content-Type': 'application/json'})
+    self.data_14 = self.res_1.get_json()
+    self.data_14_token = self.get_value(self.data_14, 'access_token')
 
     #create two offices
-    self.res_4 = self.client.post('/api/v2/offices', json=self.office, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    self.res_4 = self.client.post('/api/v2/offices', json=self.office, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_14_token)})
     self.data_4 = self.res_1.get_json()
     
-    self.res_5 = self.client.post('/api/v2/offices', json=self.office_3, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    self.res_5 = self.client.post('/api/v2/offices', json=self.office_3, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_14_token)})
     self.data_5 = self.res_1.get_json()
 
     #create two candidates
-    self.res_4 = self.client.post('/api/v2/offices/2/register', json=self.candidate, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    self.res_4 = self.client.post('/api/v2/offices/2/register', json=self.candidate, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_14_token)})
     self.data_4 = self.res_1.get_json()
     
-    self.res_5 = self.client.post('/api/v2/offices/2/register', json=self.candidate_2, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    self.res_5 = self.client.post('/api/v2/offices/2/register', json=self.candidate_2, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_14_token)})
     self.data_5 = self.res_1.get_json()
 
 
@@ -132,7 +141,7 @@ class TestVote(BaseTest):
       Test create vote method
     """
 
-    res = self.client.post('/api/v2/votes', json=self.vote, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    res = self.client.post('/api/v2/votes', json=self.vote, headers={'Authorization': 'Bearer {}'.format(self.data_14_token)})
     data = res.get_json()
     print(data)
 
@@ -145,26 +154,25 @@ class TestVote(BaseTest):
       Test fetch election results method
     """
 
-    res = self.client.post('/api/v2/votes', json=self.vote, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    res = self.client.post('/api/v2/votes', json=self.vote, headers={'Authorization': 'Bearer {}'.format(self.data_14_token)})
     data = res.get_json()
     self.assertEqual(res.status_code, 201)
     self.assertEqual(data['status'], 201)
 
-    res_2 = self.client.post('/api/v2/votes', json=self.vote_2, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    res_2 = self.client.post('/api/v2/votes', json=self.vote_2, headers={'Authorization': 'Bearer {}'.format(self.data_14_token)})
     data_2 = res.get_json()
     self.assertEqual(res_2.status_code, 201)
 
-    res_3 = self.client.post('/api/v2/votes', json=self.vote_3, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    res_3 = self.client.post('/api/v2/votes', json=self.vote_3, headers={'Authorization': 'Bearer {}'.format(self.data_14_token)})
     data_3 = res.get_json()
     self.assertEqual(res_3.status_code, 201)
 
-    res_4 = self.client.post('/api/v2/votes', json=self.vote_4, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    res_4 = self.client.post('/api/v2/votes', json=self.vote_4, headers={'Authorization': 'Bearer {}'.format(self.data_14_token)})
     data_4 = res.get_json()
     self.assertEqual(res_4.status_code, 201)
 
-    res_5 = self.client.post('', json=self.vote_5, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    res_5 = self.client.get('/api/v2/office/2/result', headers={'Authorization': 'Bearer {}'.format(self.data_14_token)})
     data_5 = res.get_json()
-    self.assertEqual(res_5.status_code, 201)
-
-    self.assertEqual(res_2.status_code, 201)
-    self.assertEqual(data_2['status'], 201)
+    self.assertEqual(res_5.status_code, 200)
+    self.assertEqual(res_5.status_code, 200)
+    self.assertEqual(data_5['status'], 200)

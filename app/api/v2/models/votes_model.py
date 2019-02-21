@@ -36,4 +36,13 @@ class Votes(Model):
 
     data = db.fetch_one(query)
     return data
+
+  def fetch_all_votes(self):
+    """
+      method for fetching all political offices
+    """
+    query = "SELECT * FROM {}".format(table)
+
+    data = db.fetch_all(query)
+    return data
   

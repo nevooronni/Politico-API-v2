@@ -23,7 +23,6 @@ class VoteAPI(MethodView):
     """ 
       Endpoint for fetching a creating a candidate
     """
-
     req_data = request.get_json()
 
     if not req_data:
@@ -70,7 +69,30 @@ class VoteAPI(MethodView):
       }]
     }), 201
 
+  @jwt_required
+  def get(self, office_id):
+
+    if not db_office.office_exists('id', office_id):
+      abort(make_response(jsonify({
+        'status': 404,
+        'data':[{
+        'message': 'office not found', 
+        }] 
+      }), 404))
+    
+    votes = db_votes.fetch_all()
+    data = []
+    data.append(VoteSchema().dump(votes).data)
+    print(votes)
+    return jsonify({
+      'status': 200, 
+      'data':[{
+        'votes': data
+      }]
+    }), 200
+
 create_vote_view = VoteAPI.as_view('create_vote_api')
+fetch_votes_view = VoteAPI.as_view('fetch_votes_view')
 
 
 

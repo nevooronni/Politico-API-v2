@@ -40,16 +40,6 @@ class DatabaseConnection:
       sys.exit(1)
 
 
-  def drop_tables(self):
-    """ 
-      method to drop tables 
-    """
-
-    for table in tables:
-      cur.execute('DROP TABLE IF EXISTS {} CASCADE'.format(table))
-
-      conn.commit()
-
   def create_tables(self):
     """ 
       method to create tables 
@@ -107,5 +97,15 @@ class DatabaseConnection:
     """
     cur.execute(query)
     conn.commit()
+
+  def drop_tables(self):
+    """ 
+      method to drop tables 
+    """
+
+    for table in tables:
+      cur.execute('DROP TABLE IF EXISTS {} CASCADE'.format(table))
+
+      conn.commit()
 
   
