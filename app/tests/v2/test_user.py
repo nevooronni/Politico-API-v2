@@ -318,7 +318,7 @@ class TestUser(BaseTest):
     user = {
       'firstname': 'Neville',
       'lastname': 'Oronni',
-      'email': 'nevooronni@gmail.com',
+      'email': 'oronni@gmail.com',
       'password': 'abcD$234g',
       'phonenumber': '0733244265'  
     }

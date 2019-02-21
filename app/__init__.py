@@ -11,6 +11,7 @@ from app.api.v2.models.token_model import RevokedTokenModel
 from app.api.v2.views.user_view import index_view, signup_auth_view, signin_auth_view, token_view
 from app.api.v2.views.party_view import create_party_view, fetch_party_view, fetch_all_parties_view, update_party_view,delete_party_view
 from app.api.v2.views.office_view import create_office_view, fetch_office_view, fetch_all_offices_view, delete_office_view
+from app.api.v2.views.candidate_view import create_candidate_view
 from db.database_config import DatabaseConnection
 
 def page_not_found(e):
@@ -41,6 +42,17 @@ def method_not_allowed(e):
     "status": 405,
     "message": "method not allowed"
   }), 405)
+
+def internal_server_error(e):
+  """
+    function that handles 500 server error
+  """
+
+  return make_response(jsonify({
+    "status": 500,
+    "message": "internal server error "
+  }), 500)
+
 
 def initialize_database(config_name):
     """method for initializing the db """
@@ -84,6 +96,8 @@ def create_app(config_name):
   app.register_error_handler(404, page_not_found)
   app.register_error_handler(405, method_not_allowed)
   app.register_error_handler(400, bad_request)
+  app.register_error_handler(500, internal_server_error)
+
 
 
   #v1 method view routes
@@ -100,6 +114,7 @@ def create_app(config_name):
   app.add_url_rule('/api/v2/offices/<int:office_id>', view_func=fetch_office_view, methods=['GET'])
   app.add_url_rule('/api/v2/offices', view_func=fetch_all_offices_view, methods=['GET'])
   app.add_url_rule('/api/v2/offices/<int:office_id>', view_func=delete_office_view, methods=['DELETE'])
+  app.add_url_rule('/api/v2/offices/<int:office_id>/register', view_func=create_candidate_view, methods=['POST'])
 
   return app
 

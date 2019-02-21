@@ -1,8 +1,9 @@
 from datetime import datetime
-from ..utils.utils import generate_id
 from .base_model import Model
+from db.database_config import DatabaseConnection
 
-offices = []
+table = 'offices'
+db = DatabaseConnection(  )
 
 class Office(Model):
   """
@@ -10,49 +11,60 @@ class Office(Model):
   """
 
   def __init__(self):
-    super().__init__(offices)
+    super().__init__(table)
 
   def save(self, data):
     """
       method to add a new office
     """
 
-    data['id'] = generate_id(self.collection)
-    return super().save(data)
+    query = "INSERT INTO {} (type, name) VALUES ('{}', '{}') RETURNING *".format(
+        table, data['type'], data['name']
+      )
+
+    data = db.insert(query)
+    print(data)
+    return data
 
   def office_exists(self, key, value):
     """
      method to check if a office exists
     """
 
-    got_office = [office for office in offices if value == office[key]]
-    return len(got_office) > 0
+    query = "SELECT * FROM {} WHERE {} = '{}'".format(
+        table, key, value)
 
-  def fetch_office_by_id(self, id):
+    data = db.fetch_one(query)
+    return data
+
+  def fetch_office_by_id(self, key, id):
     """
       method for fetching an office by id
     """
 
-    offices_fetched = [office for office in offices if office['id'] == id]
-    return offices_fetched[0]
+    query = "SELECT * FROM {} WHERE {} = '{}'".format(
+        table, key, id)
+            
+    data = db.fetch_one(query)
+    return data
 
   def fetch_all_offices(self):
     """
       method for fetching all political offices
     """
-    return offices
+    query = "SELECT * FROM {}".format(table)
 
-  # def update_party(self, party_id, name):
-  #   """ 
-  #     method to update a party's name
-  #   """
+    data = db.fetch_all(query)
+    return data
 
-  #   for party in political_parties:
-  #     if party['id'] == party_id:
-  #       party['name'] = name
+  def delete(self, office_id):
+    """
+      method for deleting a specific political office
+    """
+    query = "DELETE FROM {} WHERE id = {}".format(table, office_id)
 
-  #     return party
-
+    db.delete(query)
+    return True
   
 
   

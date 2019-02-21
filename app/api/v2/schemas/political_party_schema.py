@@ -9,5 +9,5 @@ class PoliticalPartySchema(Schema):
 
   id = fields.Int(dump_only=True)
   name = fields.Str(required=True, validate=(required))
-  hqAddress = fields.Str(required=False)
-  logoUrl = fields.Str(required=False)
+  hqaddress = fields.Str(required=False)
+  logourl = fields.Str(required=False)

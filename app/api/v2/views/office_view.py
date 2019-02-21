@@ -54,7 +54,7 @@ class PolitcalOfficeAPI(MethodView):
         }] 
       }), 404))
     
-    office = db.fetch_office_by_id(office_id)
+    office = db.fetch_office_by_id('id', office_id)
     data = []
     data.append(OfficeSchema().dump(office).data)
     return jsonify({
