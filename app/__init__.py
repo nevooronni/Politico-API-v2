@@ -12,6 +12,7 @@ from app.api.v2.views.user_view import index_view, signup_auth_view, signin_auth
 from app.api.v2.views.party_view import create_party_view, fetch_party_view, fetch_all_parties_view, update_party_view,delete_party_view
 from app.api.v2.views.office_view import create_office_view, fetch_office_view, fetch_all_offices_view, delete_office_view
 from app.api.v2.views.candidate_view import create_candidate_view
+from app.api.v2.views.vote_view import create_vote_view
 from db.database_config import DatabaseConnection
 
 def page_not_found(e):
@@ -115,6 +116,6 @@ def create_app(config_name):
   app.add_url_rule('/api/v2/offices', view_func=fetch_all_offices_view, methods=['GET'])
   app.add_url_rule('/api/v2/offices/<int:office_id>', view_func=delete_office_view, methods=['DELETE'])
   app.add_url_rule('/api/v2/offices/<int:office_id>/register', view_func=create_candidate_view, methods=['POST'])
+  app.add_url_rule('/api/v2/votes', view_func=create_vote_view, methods=['POST'])
 
   return app
-
