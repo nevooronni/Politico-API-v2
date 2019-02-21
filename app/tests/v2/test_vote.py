@@ -25,6 +25,22 @@ class TestVote(BaseTest):
       'phonenumber': '0781818181'
     }
 
+    self.super_user2 = {
+      'firstname': 'Donald',
+      'lastname': 'Trump',
+      'email': 'trump@gmail.com',
+      'password': 'abcD$234g',
+      'phonenumber': '0781818181'
+    }
+
+    self.super_user3 = {
+      'firstname': 'Donald',
+      'lastname': 'Trump',
+      'email': 'trump@gmail.com',
+      'password': 'abcD$234g',
+      'phonenumber': '0781818181'
+    }
+
     self.office = {
       'type': 'Executive',
       'name': 'Vice President',
@@ -61,8 +77,28 @@ class TestVote(BaseTest):
       'candidate': 1,
     }
 
+    self.vote_2 = {
+      'voter': 2,
+      'office': 2,
+      'candidate': 1,
+    }
+
+    self.vote_3 = {
+      'voter': 3,
+      'office': 2,
+      'candidate': 2,
+    }
+
+    self.vote_4 = {
+      'voter': 1,
+      'office': 2,
+      'candidate': 1,
+    }
+
     #signup
     self.res_1 = self.client.post('/api/v2/auth/signup', json=self.super_user, headers={'Content-Type': 'application/json'})
+    self.res_12 = self.client.post('/api/v2/auth/signup', json=self.super_user2, headers={'Content-Type': 'application/json'})
+    self.res_13 = self.client.post('/api/v2/auth/signup', json=self.super_user3, headers={'Content-Type': 'application/json'})
     self.data_1 = self.res_1.get_json()
     self.data_1_token = self.get_value(self.data_1, 'access_token')
 
@@ -103,3 +139,32 @@ class TestVote(BaseTest):
     self.assertEqual(res.status_code, 201)
     self.assertEqual(data['status'], 201)
     self.assertEqual(self.get_value(data, 'message'), 'voted succesfully')
+
+  def test_fetch_results(self):
+    """
+      Test fetch election results method
+    """
+
+    res = self.client.post('/api/v2/votes', json=self.vote, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    data = res.get_json()
+    self.assertEqual(res.status_code, 201)
+    self.assertEqual(data['status'], 201)
+
+    res_2 = self.client.post('/api/v2/votes', json=self.vote_2, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    data_2 = res.get_json()
+    self.assertEqual(res_2.status_code, 201)
+
+    res_3 = self.client.post('/api/v2/votes', json=self.vote_3, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    data_3 = res.get_json()
+    self.assertEqual(res_3.status_code, 201)
+
+    res_4 = self.client.post('/api/v2/votes', json=self.vote_4, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    data_4 = res.get_json()
+    self.assertEqual(res_4.status_code, 201)
+
+    res_5 = self.client.post('', json=self.vote_5, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
+    data_5 = res.get_json()
+    self.assertEqual(res_5.status_code, 201)
+
+    self.assertEqual(res_2.status_code, 201)
+    self.assertEqual(data_2['status'], 201)
