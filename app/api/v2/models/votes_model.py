@@ -55,13 +55,13 @@ class Votes(Model):
     all_votes = self.fetch_all_votes()
     specific_office_votes = []
     all_votes = self.fetch_all_votes()
+    print(all_votes)
     for vote in all_votes:
       if (vote['office'] == office_id):
-        specific_office_votes.append(vote)
-        print(specific_office_votes)
+        specific_office_votes.insert(len(specific_office_votes), vote)
         return specific_office_votes
       else:
-        specific_office_votes
+        None
 
   
   def check_if_vote_exists_for_specific_office(self, key, value, value2):

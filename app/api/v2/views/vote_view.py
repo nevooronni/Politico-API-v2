@@ -74,6 +74,15 @@ class VoteAPI(MethodView):
     """
       Endpoint for fetching all votes
     """
+
+    if not db_office.office_exists('id', office_id):
+      abort(make_response(jsonify({
+        'status': 404,
+        'data':[{
+        'message': 'office not found', 
+        }] 
+      }), 404))
+
     votes = db_votes.fetch_results(office_id)
     response = VoteSchema(many=True).dump(votes).data
     return jsonify({

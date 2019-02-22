@@ -18,11 +18,8 @@ class TestCandidate(BaseTest):
     super().tearDown()
 
     self.super_user = {
-      'firstname': 'Donald',
-      'lastname': 'Trump',
-      'email': 'trump@gmail.com',
-      'password': 'abcD$234g',
-      'phonenumber': '0781818181'
+      'phonenumber': '0712345678',
+      'password': 'asf8$#Er0'
     }
 
     self.office = {
@@ -36,11 +33,11 @@ class TestCandidate(BaseTest):
     }
 
     self.candidate = {
-      'user_id': 2
+      'user_id': 1
     }
 
     #signup
-    self.res_1 = self.client.post('/api/v2/auth/signup', json=self.super_user, headers={'Content-Type': 'application/json'})
+    self.res_1 = self.client.post('/api/v2/auth/login', json=self.super_user, headers={'Content-Type': 'application/json'})
     self.data_1 = self.res_1.get_json()
     self.data_1_token = self.get_value(self.data_1, 'access_token')
 
@@ -50,7 +47,6 @@ class TestCandidate(BaseTest):
     
     self.res_5 = self.client.post('/api/v2/offices', json=self.office_3, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_1_token)})
     self.data_5 = self.res_1.get_json()
-    print(self.data_5)
 
  
   def get_value(self, data, key):
@@ -70,7 +66,6 @@ class TestCandidate(BaseTest):
 
     res = self.client.post('/api/v2/offices/2/register', json=self.candidate, headers={'Authorization': 'Bearer {}'.format(self.data_1_token)})
     data = res.get_json()
-
     self.assertEqual(res.status_code, 201)
     self.assertEqual(data['status'], 201)
     self.assertEqual(self.get_value(data, 'message'), 'candidate created succesfully')

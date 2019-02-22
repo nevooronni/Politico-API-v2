@@ -17,6 +17,11 @@ class TestVote(BaseTest):
     """
     super().setUp()
 
+    self.admin_user = {
+      'phonenumber': '0712345678',
+      'password': 'asf8$#Er0'
+    }
+
     self.super_user = {
       'firstname': 'Donald',
       'lastname': 'Trump',
@@ -26,9 +31,9 @@ class TestVote(BaseTest):
     }
 
     self.super_user2 = {
-      'firstname': 'Neville',
-      'lastname': 'Oronni',
-      'email': 'neville@gmail.com',
+      'firstname': 'Chelsea',
+      'lastname': 'Handler',
+      'email': 'chelsea@gmail.com',
       'password': 'abcD$234g',
       'phonenumber': '0745992344'
     }
@@ -105,26 +110,38 @@ class TestVote(BaseTest):
 
     #signup
     self.res_1 = self.client.post('/api/v2/auth/signup', json=self.super_user, headers={'Content-Type': 'application/json'})
+    self.assertEqual(self.res_1.status_code, 201)
     self.res_12 = self.client.post('/api/v2/auth/signup', json=self.super_user2, headers={'Content-Type': 'application/json'})
+    self.assertEqual(self.res_12.status_code, 201)
     self.res_13 = self.client.post('/api/v2/auth/signup', json=self.super_user3, headers={'Content-Type': 'application/json'})
-    self.res_14 = self.client.post('/api/v2/auth/signup', json=self.super_user3, headers={'Content-Type': 'application/json'})
-    self.data_14 = self.res_1.get_json()
+    self.assertEqual(self.res_13.status_code, 201)
+    self.res_14 = self.client.post('/api/v2/auth/signup', json=self.super_user4, headers={'Content-Type': 'application/json'})
+    self.assertEqual(self.res_14.status_code, 201)
+    self.data_14 = self.res_14.get_json()
     self.data_14_token = self.get_value(self.data_14, 'access_token')
 
+    #signin admin user
+    self.res_15 = self.client.post('/api/v2/auth/login', json=self.admin_user, headers={'Content-Type': 'application/json'})
+    self.data_15 = self.res_15.get_json()
+    self.data_15_token = self.get_value(self.data_15, 'access_token')
+
     #create two offices
-    self.res_4 = self.client.post('/api/v2/offices', json=self.office, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_14_token)})
-    self.data_4 = self.res_1.get_json()
+    self.res_4 = self.client.post('/api/v2/offices', json=self.office, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_15_token)})
+    self.assertEqual(self.res_4.status_code, 201)
+    self.data_4 = self.res_4.get_json()
     
-    self.res_5 = self.client.post('/api/v2/offices', json=self.office_3, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_14_token)})
-    self.data_5 = self.res_1.get_json()
+    self.res_5 = self.client.post('/api/v2/offices', json=self.office_3, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_15_token)})
+    self.assertEqual(self.res_5.status_code, 201)
+    self.data_5 = self.res_5.get_json()
 
     #create two candidates
-    self.res_4 = self.client.post('/api/v2/offices/2/register', json=self.candidate, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_14_token)})
-    self.data_4 = self.res_1.get_json()
+    self.res_41 = self.client.post('/api/v2/offices/2/register', json=self.candidate, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_15_token)})
+    self.assertEqual(self.res_41.status_code, 201)
+    self.data_41 = self.res_41.get_json()
     
-    self.res_5 = self.client.post('/api/v2/offices/2/register', json=self.candidate_2, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_14_token)})
-    self.data_5 = self.res_1.get_json()
-
+    self.res_51 = self.client.post('/api/v2/offices/2/register', json=self.candidate_2, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.data_15_token)})
+    self.assertEqual(self.res_51.status_code, 201)
+    self.data_51 = self.res_51.get_json()
 
   def get_value(self, data, key):
     new_value = data['data'][0]
