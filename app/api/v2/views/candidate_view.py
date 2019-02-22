@@ -1,6 +1,7 @@
 from flask import jsonify, request, abort, make_response
 from flask.views import MethodView
 # from ...v1 import version_1 as v1
+from ..utils.admin_required import admin_required
 from ..schemas.candidate_schema import CandidateSchema
 from ..models.user_model import User
 from ..models.office_model import Office
@@ -17,6 +18,7 @@ class CandidateAPI(MethodView):
   """
 
   @jwt_required
+  @admin_required
   def post(self, office_id):
     """ 
       Endpoint for fetching a creating a candidate

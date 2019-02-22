@@ -12,7 +12,7 @@ from app.api.v2.views.user_view import index_view, signup_auth_view, signin_auth
 from app.api.v2.views.party_view import create_party_view, fetch_party_view, fetch_all_parties_view, update_party_view,delete_party_view
 from app.api.v2.views.office_view import create_office_view, fetch_office_view, fetch_all_offices_view, delete_office_view
 from app.api.v2.views.candidate_view import create_candidate_view
-from app.api.v2.views.vote_view import create_vote_view
+from app.api.v2.views.vote_view import create_vote_view, fetch_votes_view
 from db.database_config import DatabaseConnection
 
 def page_not_found(e):
@@ -62,7 +62,6 @@ def initialize_database(config_name):
     try:
       db = DatabaseConnection()
       db.init_connection(config_name)
-      db.drop_tables()
       db.create_tables()
       db.create_admin()
 
@@ -99,8 +98,6 @@ def create_app(config_name):
   app.register_error_handler(400, bad_request)
   app.register_error_handler(500, internal_server_error)
 
-
-
   #v1 method view routes
   app.add_url_rule('/api/v2/index', view_func=index_view, methods=['GET'])
   app.add_url_rule('/api/v2/auth/signup', view_func=signup_auth_view, methods=['POST'])
@@ -117,5 +114,7 @@ def create_app(config_name):
   app.add_url_rule('/api/v2/offices/<int:office_id>', view_func=delete_office_view, methods=['DELETE'])
   app.add_url_rule('/api/v2/offices/<int:office_id>/register', view_func=create_candidate_view, methods=['POST'])
   app.add_url_rule('/api/v2/votes', view_func=create_vote_view, methods=['POST'])
+  app.add_url_rule('/api/v2/office/<int:office_id>/result', view_func=fetch_votes_view, methods=['GET'])
+
 
   return app

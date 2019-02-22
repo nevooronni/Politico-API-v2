@@ -1,6 +1,7 @@
 from flask import jsonify, request, abort, make_response
 from flask.views import MethodView
 # from ...v1 import version_1 as v1
+from ..utils.admin_required import admin_required
 from ..schemas.political_party_schema import PoliticalPartySchema
 from ..models.political_party_model import PoliticalParty
 from flask_jwt_extended import (jwt_required, get_jwt_identity)
@@ -13,6 +14,7 @@ class PoliticalPartyAPI(MethodView):
   """
 
   @jwt_required
+  @admin_required
   def post(self):
     """
       Endpoint for creating a political party
@@ -65,6 +67,7 @@ class PoliticalPartyAPI(MethodView):
     }), 200
 
   @jwt_required
+  @admin_required
   def patch(self, party_id):
     """
       method to upvote a party
@@ -94,6 +97,7 @@ class PoliticalPartyAPI(MethodView):
     }), 200
 
   @jwt_required
+  @admin_required
   def delete(self, party_id):
     """
       method to delete a party

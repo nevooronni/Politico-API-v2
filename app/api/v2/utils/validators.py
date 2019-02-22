@@ -63,6 +63,6 @@ def password(password):
       break
 
   if error == True:
-    raise ValidationError('Weak password provided')
+    raise ValidationError('Weak password provided on signup or wrong passoword provided on login please try again')
 
 

@@ -1,6 +1,7 @@
 from flask import jsonify, request, abort, make_response
 from flask.views import MethodView
 # from ...v1 import version_1 as v1
+from ..utils.admin_required import admin_required
 from ..schemas.office_schema import OfficeSchema
 from ..models.office_model import Office
 from flask_jwt_extended import (jwt_required, get_jwt_identity)
@@ -13,6 +14,7 @@ class PolitcalOfficeAPI(MethodView):
   """
 
   @jwt_required
+  @admin_required
   def post(self):
     """
       Endpoint for creating a office
@@ -65,6 +67,7 @@ class PolitcalOfficeAPI(MethodView):
     }), 200
 
   @jwt_required
+  @admin_required
   def delete(self, office_id):
     """
       method to delete an office
